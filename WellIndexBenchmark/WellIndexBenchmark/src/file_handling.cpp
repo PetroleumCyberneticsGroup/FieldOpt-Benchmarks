@@ -1,6 +1,16 @@
-#include <QDebug>
-#include "file_handling.h"
 
+#include <QDebug>
+#include <QString>
+#include <QStringList>
+#include <QFile>
+#include <QDir>
+#include <QFileInfo>
+#include <QDirIterator>
+#include <QRegularExpression>
+#include "./src/well_data_pcg.h"
+
+// Copy from FieldOpt/Utilities/FileHandling.cpp
+// (Replace by library later on...)
 bool FileExists(QString file_path)
 {
     QFileInfo file(file_path);
@@ -12,6 +22,8 @@ bool FileExists(QString file_path)
     else return false;
 }
 
+// Copy from FieldOpt/Utilities/FileHandling.cpp
+// (Replace by library later on...)
 bool DirectoryExists(QString directory_path)
 {
     QFileInfo folder(directory_path);
@@ -19,18 +31,69 @@ bool DirectoryExists(QString directory_path)
     else return false;
 }
 
-QStringList GetWellList(QString directory_path)
+// Returns current path
+QString GetCurrentPath()
 {
+    QDir dir;
+    QString current_path = dir.currentPath();
+    qDebug() << "Current path is: " << current_path;
+    return current_path;
+}
+
+// Returns a WellDataPCG objects that includes a QStringList
+// list of all directories within current directory that contain
+// a well data file of the form tw*.xyz
+WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
+{
+    WellDataPCG WellDataPCG_;
+
+    // Setup QDir and QDirIterator objects
     QDir dir (directory_path);
     dir.setSorting(QDir::Name);
 
-    QStringList filter;
-    filter << "*.xyz";
-    dir.setNameFilters(filter);
+    QDirIterator it(dir.absolutePath(),
+                    QDir::Dirs |
+                    QDir::NoDotAndDotDot);
 
-    QStringList well_list = dir.entryList(QDir::AllEntries | QDir::Dirs);
+    QStringList well_dirs_paths;
+    QStringList well_dirs_names;
+    QStringList well_file_names;
 
-    return well_list;
+    while (it.hasNext()) {
+
+        if (dbgFlag)
+        { qDebug() << "current folder [it.next()]: " << it.next();  }
+
+        QDir temp_dir (it.fileName());
+        QStringList dir_list =
+                temp_dir.entryList(QStringList() << "tw*xyz",
+                                  QDir::AllEntries |
+                                  QDir::Files |
+                                  QDir::CaseSensitive |
+                                  QDir::NoDotAndDotDot);
+
+        if (dir_list.isEmpty() || dir_list.size() > 1){
+            qDebug() << "==> This directory has no well "
+                        "file or has multiple well files!";
+        }
+        else if(dir_list.size()==1){
+            if (dbgFlag)
+            { qDebug() << "dir_list: " << dir_list;  }
+            well_dirs_paths << it.filePath();
+            well_dirs_names << it.fileName();
+            well_file_names << dir_list;
+        }
+        else{
+            if (dbgFlag)
+            { qDebug() << "???? ";  }
+        }
+    }
+
+    WellDataPCG_.well_dirs_paths = well_dirs_paths;
+    WellDataPCG_.well_dirs_names = well_dirs_names;
+    WellDataPCG_.well_file_names = well_file_names;
+
+    return WellDataPCG_;
 }
 
 bool CopyCurrentWell(QString directory_path, QString well_name)
@@ -41,9 +104,5 @@ bool CopyCurrentWell(QString directory_path, QString well_name)
     qDebug() << "source_file " << source_file;
     qDebug() << "target_file " << target_file;
 
-//    std::ifstream  src("from.xyz", std::ios::binary);
-//    std::ofstream  dst("to.xyz",   std::ios::binary);
-
-//    dst << src.rdbuf();
     return true;
 }

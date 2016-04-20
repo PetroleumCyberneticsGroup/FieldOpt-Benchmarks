@@ -1,11 +1,15 @@
 #ifndef FILE_HANDLING_H
 #define FILE_HANDLING_H
 
+#include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
+#include <QDirIterator>
+#include <QRegularExpression>
+#include "./src/well_data_pcg.h"
 
 /* \brief Check if file exists
  * \param file_path Path to file
@@ -19,12 +23,18 @@ bool FileExists(QString file_path);
  */
 bool DirectoryExists(QString directory_path);
 
+/* \brief Get current directory
+ * \param none
+ * \return QString of absolute current path
+ */
+QString GetCurrentPath();
+
 /* \brief Gets the name of all files with a *.xyz extension
  * in given directory, stores file names in a QStringList
  * \param dir_path Path to directory
  * \return QStringList of file names
  */
-QStringList GetWellList(QString directory_path);
+WellDataPCG GetDirList(QString directory_path, bool dbgFlag);
 
 /* \brief Makes a copy of files associated with a given well
  * naming this copy TW01 which is the well name used in the

@@ -1,14 +1,13 @@
-#ifndef WELL_PCG_H
-#define WELL_PCG_H
+#ifndef WELLPCG_H
+#define WELLPCG_H
 
-#include <QString>
+//#include "test_wells.h"
+//#include "well_rms.h"
 
 class WellPCG
 {
 public:
-    WellPCG(){}
-    QString name() const { return name_;}
-    QStringList files();
+    WellPCG();
 };
 
-#endif // WELL_PCG_H
+#endif // WELLPCG_H
