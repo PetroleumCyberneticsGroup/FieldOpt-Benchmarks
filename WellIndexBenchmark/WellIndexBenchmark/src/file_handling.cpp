@@ -105,20 +105,20 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
     return WellDataPCG_;
 }
 
-// Function that clears screen
-// code taken from
-// http://www.cplusplus.com/articles/4z18T05o/
-void ClearScreen()
-{
-if (!cur_term)
-{
-int result;
-setupterm( NULL, STDOUT_FILENO, &result );
-if (result <= 0) return;
-}
+//// Function that clears screen
+//// code taken from
+//// http://www.cplusplus.com/articles/4z18T05o/
+//void ClearScreen()
+//{
+//if (!cur_term)
+//{
+//int result;
+//setupterm( NULL, STDOUT_FILENO, &result );
+//if (result <= 0) return;
+//}
 
-putp( tigetstr( "clear" ) );
-}
+//putp( tigetstr( "clear" ) );
+//}
 
 bool CopyCurrentWell(QString directory_path, QString well_name)
 {
