@@ -12,6 +12,7 @@ public:
     QStringList well_dirs_paths;
     QStringList well_dirs_names;
     QStringList well_file_names;
+
 };
 
 #endif // WELL_DATA_PCG_H

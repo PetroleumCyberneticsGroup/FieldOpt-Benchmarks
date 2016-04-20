@@ -9,6 +9,9 @@
 #include <QRegularExpression>
 #include "./src/well_data_pcg.h"
 
+#include <term.h>
+#include <unistd.h>
+
 // Copy from FieldOpt/Utilities/FileHandling.cpp
 // (Replace by library later on...)
 bool FileExists(QString file_path)
@@ -59,10 +62,15 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
     QStringList well_dirs_names;
     QStringList well_file_names;
 
+    qDebug() << "checking if directories in current path"
+                "constain well data files...: ";
+
     while (it.hasNext()) {
 
+        QString dir_name = it.next();
         if (dbgFlag)
-        { qDebug() << "current folder [it.next()]: " << it.next();  }
+        { qDebug() << "current folder [it.next()]: "
+                   << dir_name;  }
 
         QDir temp_dir (it.fileName());
         QStringList dir_list =
@@ -73,8 +81,9 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
                                   QDir::NoDotAndDotDot);
 
         if (dir_list.isEmpty() || dir_list.size() > 1){
-            qDebug() << "==> This directory has no well "
-                        "file or has multiple well files!";
+            qDebug() << "==> directory" << it.fileName()
+                     << "has no well file or has"
+                        " multiple well files!";
         }
         else if(dir_list.size()==1){
             if (dbgFlag)
@@ -94,6 +103,21 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
     WellDataPCG_.well_file_names = well_file_names;
 
     return WellDataPCG_;
+}
+
+// Function that clears screen
+// code taken from
+// http://www.cplusplus.com/articles/4z18T05o/
+void ClearScreen()
+{
+if (!cur_term)
+{
+int result;
+setupterm( NULL, STDOUT_FILENO, &result );
+if (result <= 0) return;
+}
+
+putp( tigetstr( "clear" ) );
 }
 
 bool CopyCurrentWell(QString directory_path, QString well_name)

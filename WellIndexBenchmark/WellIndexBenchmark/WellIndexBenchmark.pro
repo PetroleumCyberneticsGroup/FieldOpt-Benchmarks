@@ -13,6 +13,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 LIBS += -L/usr/lib -lboost_system -lboost_filesystem
+LIBS += -lcurses
 
 TEMPLATE = app
 

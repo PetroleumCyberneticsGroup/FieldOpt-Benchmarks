@@ -29,6 +29,8 @@ bool DirectoryExists(QString directory_path);
  */
 QString GetCurrentPath();
 
+void ClearScreen();
+
 /* \brief Gets the name of all files with a *.xyz extension
  * in given directory, stores file names in a QStringList
  * \param dir_path Path to directory

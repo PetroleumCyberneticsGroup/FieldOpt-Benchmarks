@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <QString>
+#include <QProcess>
 #include <QtDebug>
 #include <iostream>
 #include "./src/test_wells.h"
@@ -8,30 +9,63 @@
 #include "./src/file_handling.h"
 #include "./src/well_data_pcg.h"
 
-
-
-
-
 int main(int argc, char *argv[])
 {
+    // ClearScreen();
 
     // Get current path
     QString current_path = GetCurrentPath();
 
     // Get WellDataPCG object containing list of all well data
     // dirs and file names within current_path
-    WellDataPCG WellDataPCG_ = GetDirList(current_path,true);
+    WellDataPCG WellDataPCG_ = GetDirList(current_path,false);
 
-    qDebug() << "well dirs paths: \n" << WellDataPCG_.well_dirs_paths;
-    qDebug() << "well dirs: \n" << WellDataPCG_.well_dirs_names;
-    qDebug() << "well files names: \n" << WellDataPCG_.well_file_names;
-    qDebug() << "\n";
+//    qDebug() << "well dirs paths: \n" << WellDataPCG_.well_dirs_paths;
+//    qDebug() << "well dirs: \n" << WellDataPCG_.well_dirs_names;
+//    qDebug() << "well files names: \n" << WellDataPCG_.well_file_names;
+//    qDebug() << "\n";
 
     // Read data from one of the well files
 
+    qDebug() << sizeof(WellDataPCG_.well_dirs_paths);
 
+    QString inputf = WellDataPCG_.well_dirs_paths[0]
+            + "/" +  WellDataPCG_.well_file_names[0];
+    QString outputf = WellDataPCG_.well_dirs_paths[0] + "/TW01.xyz";
 
-    // Call RMS to
+    qDebug() << "input file \n" << inputf;
+    qDebug() << "output file \n" << outputf;
+
+    if (QFile::exists(outputf))
+    {
+        QFile::remove(outputf);
+    }
+    bool copy_ok = QFile::copy(inputf, outputf);
+
+    qDebug() << "copy_ok: " << copy_ok;
+
+    // Call RMS workflow for current file
+
+//    bash /opt/roxar/rms/rms_2013.0.3_el5 -project \
+//    rms_wi_benchmark.pro -batch EXPORT_TW01_MD -readonly
+
+//    QString rms_command =
+//            "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
+//            + current_path + "../rms/rms_wi_benchmark.pro"
+//            + " -batch EXPORT_TW01_MD -readonly";
+//    system(rms_command);
+
+    QString program = "bash /opt/roxar/rms/rms_2013.0.3_el5";
+    QStringList arguments;
+    arguments << "-project" << current_path + "../rms/rms_wi_benchmark.pro"
+              << " -batch EXPORT_TW01_MD -readonly";
+    QProcess process;
+    process.start(program, arguments);
+    process.waitForBytesWritten();
+        if (!process.waitForFinished(1)) {
+            process.kill();
+            process.waitForFinished(1);
+        }
 
     // Input relative path and name of well data directory
     // If no input, then default is data folder names starting
