@@ -50,31 +50,38 @@ int main(int argc, char *argv[])
 //    bash /opt/roxar/rms/rms_2013.0.3_el5 -project \
 //    rms_wi_benchmark.pro -batch EXPORT_TW01_MD -readonly
 
-//    QString rms_command =
-//            "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
-//            + current_path + "../rms/rms_wi_benchmark.pro"
-//            + " -batch EXPORT_TW01_MD -readonly";
-//    system(rms_command);
+    QString rms_command =
+            "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
+            + current_path + "/../rms/rms_wi_benchmark.pro"
+            + " -batch EXPORT_TW01_MD -readonly";
+    qDebug() << "Performing RMS command: " << rms_command;
+
+
+//    rms_command.
+
+//    std::cout << rms_command.toStdString();
+    int ecode = system(rms_command.toLatin1());
+    qDebug() << "exit code: " << ecode;
 
 //    QString program = "bash /opt/roxar/rms/rms_2013.0.3_el5";
 //    QStringList arguments;
 //    arguments << "-project" << current_path + "../rms/rms_wi_benchmark.pro"
 //              << " -batch EXPORT_TW01_MD -readonly";
 //    QString program = "/bin/sh";
-    QString program = "/bin/sh -c \"ls \"";
-    QStringList arguments;
+//    QString program = "/bin/sh -c \"ls \"";
+//    QStringList arguments;
 //    arguments << "-c" << "pwd";
-    QProcess process;
-    process.setWorkingDirectory(dpath);
-    process.setProcessChannelMode(QProcess::MergedChannels);
-    process.start(program, arguments);
-    process.waitForBytesWritten();
-        if (!process.waitForFinished(1)) {
-            process.kill();
-            process.waitForFinished(1);
-        }
-    qDebug() << "exit code: " << process.exitCode();
-    qDebug() << process.readAllStandardOutput();
+//    QProcess process;
+//    process.setWorkingDirectory(dpath);
+//    process.setProcessChannelMode(QProcess::MergedChannels);
+//    process.start(program, arguments);
+//    process.waitForBytesWritten();
+//        if (!process.waitForFinished(1)) {
+//            process.kill();
+//            process.waitForFinished(1);
+//        }
+//    qDebug() << "exit code: " << process.exitCode();
+//    qDebug() << process.readAllStandardOutput();
 
     // Input relative path and name of well data directory
     // If no input, then default is data folder names starting
