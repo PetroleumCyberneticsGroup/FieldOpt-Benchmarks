@@ -29,9 +29,10 @@ int main(int argc, char *argv[])
 
     qDebug() << sizeof(WellDataPCG_.well_dirs_paths);
 
-    QString inputf = WellDataPCG_.well_dirs_paths[0]
-            + "/" +  WellDataPCG_.well_file_names[0];
-    QString outputf = WellDataPCG_.well_dirs_paths[0] + "/TW01.xyz";
+    QString dpath = WellDataPCG_.well_dirs_paths[0];
+    QString fname = WellDataPCG_.well_file_names[0];
+    QString inputf = dpath + "/" + fname;
+    QString outputf = dpath + "/TW01.xyz";
 
     qDebug() << "input file \n" << inputf;
     qDebug() << "output file \n" << outputf;
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
     {
         QFile::remove(outputf);
     }
-    bool copy_ok = QFile::copy(inputf, outputf);
+    bool copy_ok = QFile::copy(inputf,outputf);
 
     qDebug() << "copy_ok: " << copy_ok;
 
@@ -55,17 +56,25 @@ int main(int argc, char *argv[])
 //            + " -batch EXPORT_TW01_MD -readonly";
 //    system(rms_command);
 
-    QString program = "bash /opt/roxar/rms/rms_2013.0.3_el5";
+//    QString program = "bash /opt/roxar/rms/rms_2013.0.3_el5";
+//    QStringList arguments;
+//    arguments << "-project" << current_path + "../rms/rms_wi_benchmark.pro"
+//              << " -batch EXPORT_TW01_MD -readonly";
+//    QString program = "/bin/sh";
+    QString program = "/bin/sh -c \"ls \"";
     QStringList arguments;
-    arguments << "-project" << current_path + "../rms/rms_wi_benchmark.pro"
-              << " -batch EXPORT_TW01_MD -readonly";
+//    arguments << "-c" << "pwd";
     QProcess process;
+    process.setWorkingDirectory(dpath);
+    process.setProcessChannelMode(QProcess::MergedChannels);
     process.start(program, arguments);
     process.waitForBytesWritten();
         if (!process.waitForFinished(1)) {
             process.kill();
             process.waitForFinished(1);
         }
+    qDebug() << "exit code: " << process.exitCode();
+    qDebug() << process.readAllStandardOutput();
 
     // Input relative path and name of well data directory
     // If no input, then default is data folder names starting
