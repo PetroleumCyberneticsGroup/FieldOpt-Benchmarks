@@ -39,14 +39,76 @@ QString GetCurrentPath()
 {
     QDir dir;
     QString current_path = dir.currentPath();
-    qDebug() << "Current path is: " << current_path;
+    qDebug() << "==> current path is: " << current_path << "\n";
     return current_path;
 }
+
+WellDataPCG GetDirListSingle(QString directory_path,
+                             QString dir_name, int debug_level)
+{
+    WellDataPCG WellDataPCG_;
+
+    // Setup QDir object
+    QDir dir (directory_path);
+    dir.setSorting(QDir::Name);
+
+    QStringList well_dirs_paths;
+    QStringList well_dirs_names;
+    QStringList well_file_names;
+
+    qDebug() << "==> checking if directories in current "
+                "path constain well data files...: \n";
+
+    QDir temp_dir = directory_path + "/" + dir_name;
+
+    if (!temp_dir.exists())
+    {
+        qDebug() << "directory does not exist! ..."
+                    "exiting";
+        exit(-1);
+    }
+
+    if (debug_level==2)
+    { qDebug() << "current folder: "
+               << dir_name;  }
+    // Search given directory
+    QStringList dir_list =
+            temp_dir.entryList(QStringList() << "tw*xyz",
+                              QDir::AllEntries |
+                              QDir::Files |
+                              QDir::CaseSensitive |
+                              QDir::NoDotAndDotDot);
+
+    if (dir_list.isEmpty() || dir_list.size() > 1){
+        qDebug() << "==> directory" << temp_dir.dirName()
+                 << "has no well file or has"
+                    " multiple well files!";
+    }
+    else if(dir_list.size()==1){
+        if (debug_level==2)
+        { qDebug() << "dir_list: " << dir_list;  }
+
+        well_dirs_paths << temp_dir.absolutePath();
+        well_dirs_names << temp_dir.dirName();
+        well_file_names << dir_list;
+    }
+    else{
+        if (debug_level==2)
+        { qDebug() << "???? ";  }
+    }
+
+    WellDataPCG_.well_dirs_paths = well_dirs_paths;
+    WellDataPCG_.well_dirs_names = well_dirs_names;
+    WellDataPCG_.well_file_names = well_file_names;
+
+    return WellDataPCG_;
+}
+
 
 // Returns a WellDataPCG objects that includes a QStringList
 // list of all directories within current directory that contain
 // a well data file of the form tw*.xyz
-WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
+WellDataPCG GetDirList(QString directory_path, int debug_level)
 {
     WellDataPCG WellDataPCG_;
 
@@ -62,17 +124,19 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
     QStringList well_dirs_names;
     QStringList well_file_names;
 
-    qDebug() << "checking if directories in current path"
-                "constain well data files...: ";
+    qDebug() << "==> checking if directories in current "
+                "path constain well data files...: \n";
 
     while (it.hasNext()) {
 
         QString dir_name = it.next();
-        if (dbgFlag)
+        QDir temp_dir = it.fileName();
+        QString file_path = it.filePath();
+
+        if (debug_level==2)
         { qDebug() << "current folder [it.next()]: "
                    << dir_name;  }
-
-        QDir temp_dir (it.fileName());
+        // Search given directory
         QStringList dir_list =
                 temp_dir.entryList(QStringList() << "tw*xyz",
                                   QDir::AllEntries |
@@ -81,19 +145,20 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
                                   QDir::NoDotAndDotDot);
 
         if (dir_list.isEmpty() || dir_list.size() > 1){
-            qDebug() << "==> directory" << it.fileName()
+            qDebug() << "==> directory" << temp_dir.dirName()
                      << "has no well file or has"
                         " multiple well files!";
         }
         else if(dir_list.size()==1){
-            if (dbgFlag)
+            if (debug_level==2)
             { qDebug() << "dir_list: " << dir_list;  }
-            well_dirs_paths << it.filePath();
-            well_dirs_names << it.fileName();
+
+            well_dirs_paths << file_path;
+            well_dirs_names << temp_dir.dirName();
             well_file_names << dir_list;
         }
         else{
-            if (dbgFlag)
+            if (debug_level==2)
             { qDebug() << "???? ";  }
         }
     }
@@ -105,20 +170,44 @@ WellDataPCG GetDirList(QString directory_path, bool dbgFlag)
     return WellDataPCG_;
 }
 
-//// Function that clears screen
-//// code taken from
-//// http://www.cplusplus.com/articles/4z18T05o/
-//void ClearScreen()
-//{
-//if (!cur_term)
-//{
-//int result;
-//setupterm( NULL, STDOUT_FILENO, &result );
-//if (result <= 0) return;
-//}
 
-//putp( tigetstr( "clear" ) );
-//}
+int RunRMS(QString current_path, bool run_rms)
+{
+    /* bash /opt/roxar/rms/rms_2013.0.3_el5 -project \
+     * rms_wi_benchmark.pro -batch EXPORT_TW01_MD -readonly
+    */
+    QString rms_command =
+            "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
+            + current_path + "/../rms/rms_wi_benchmark.pro"
+            + " -batch EXPORT_TW01_MD -readonly";
+
+    int ecode;
+    if(run_rms)
+    {
+        qDebug() << "\n==> performing RMS command: " << rms_command;
+        ecode = system(rms_command.toLatin1());
+    }else
+    {
+        qDebug() << "\n==> not performing RMS command: ";
+        ecode = -1;
+    }
+    return ecode;
+}
+
+bool CopyToFromWorkflowFolder(QString inputf, QString outputf)
+{
+    qDebug() << "\ninput file:" << inputf;
+    qDebug() << "output file:" << outputf;
+
+    if (QFile::exists(outputf))
+    {
+        QFile::remove(outputf);
+    }
+    bool ccode = QFile::copy(inputf,outputf);
+    return ccode;
+}
+
+
 
 bool CopyCurrentWell(QString directory_path, QString well_name)
 {

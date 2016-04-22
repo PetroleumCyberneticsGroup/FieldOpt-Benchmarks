@@ -29,14 +29,20 @@ bool DirectoryExists(QString directory_path);
  */
 QString GetCurrentPath();
 
-//void ClearScreen();
+int RunRMS(QString current_path, bool run_rms);
+
+bool CopyToFromWorkflowFolder(QString inputf, QString outputf);
 
 /* \brief Gets the name of all files with a *.xyz extension
  * in given directory, stores file names in a QStringList
  * \param dir_path Path to directory
  * \return QStringList of file names
  */
-WellDataPCG GetDirList(QString directory_path, bool dbgFlag);
+WellDataPCG GetDirList(QString directory_path, int debug_level);
+
+WellDataPCG GetDirListSingle(QString directory_path,
+                             QString dir_name, int debug_level);
+
 
 /* \brief Makes a copy of files associated with a given well
  * naming this copy TW01 which is the well name used in the
