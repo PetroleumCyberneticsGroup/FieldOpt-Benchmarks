@@ -8,7 +8,7 @@ from decimal import *
 os.system('clear')
 
 class Well:
-	root = "/home/bellout/Dropbox/SharedFieldOptDev15/files_HM/Test_cases_well_index_calculation/test_rms/working_test/"
+	root = "/home/bellout/git/PCG/FieldOptBenchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/"
 	fnameIn = "TW01.txt"
 	name = ""
 	date = "01/11/2016"

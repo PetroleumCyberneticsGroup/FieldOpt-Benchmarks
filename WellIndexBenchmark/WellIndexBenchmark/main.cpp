@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QCoreApplication>
 #include <QString>
 #include <QProcess>
@@ -11,8 +12,15 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     int debug_level = 1;
-    bool run_rms = false;
+
+    bool run_rms = true;
+    if(argc == 3 && (strcmp(argv[2],"norms") == 0))
+    {
+        run_rms = false;
+    }
 
     // Clear console
     system("clear");
@@ -37,12 +45,12 @@ int main(int argc, char *argv[])
                     "path. Exiting...";
         exit(-1);
     }
-    else if(argc == 2 && (strcmp(argv[1],"all") == 0))
+    else if(argc >= 2 && (strcmp(argv[1],"all") == 0))
     {
         qDebug() << "treating all folders...";
         WellDataPCG_ = GetDirList(current_path,debug_level);
     }
-    else if(argc == 2)
+    else if(argc >= 2)
     {
         qDebug() << "treating single folder...";
         WellDataPCG_ = GetDirListSingle(current_path,argv[1],debug_level);

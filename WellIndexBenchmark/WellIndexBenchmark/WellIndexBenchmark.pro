@@ -6,7 +6,9 @@
 
 QT       += core
 
-QT       -= gui
+QT       += gui
+
+QT       += widgets
 
 TARGET = WellIndexBenchmark
 CONFIG   += console

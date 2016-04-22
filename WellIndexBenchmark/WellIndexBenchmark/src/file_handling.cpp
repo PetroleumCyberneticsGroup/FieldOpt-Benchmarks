@@ -179,14 +179,15 @@ int RunRMS(QString current_path, bool run_rms)
     QString rms_command =
             "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
             + current_path + "/../rms/rms_wi_benchmark.pro"
-            + " -batch EXPORT_TW01_MD -readonly";
+            + " -batch WI_CALC_BENCHMARK -readonly";
 
     int ecode;
     if(run_rms)
     {
         qDebug() << "\n==> performing RMS command: " << rms_command;
         ecode = system(rms_command.toLatin1());
-    }else
+    }
+    else
     {
         qDebug() << "\n==> not performing RMS command: ";
         ecode = -1;

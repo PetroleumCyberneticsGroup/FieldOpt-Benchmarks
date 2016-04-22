@@ -1,16 +1,10 @@
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
 <b>Project realisation 1</b>
-Job 1 - IMPORT_TRAJECTORY_DATA - for project realisation 1
-<font color="green"><b>Completed job 1</b></font>
-<table border="1"><tr><td><b>Elapsed time</b></td><td>0:00:00.0</td></tr><tr><td><b>Total elapsed time</b></td><td>0:00:00.0</td></tr></table>
+Job 1, for Project realisation 1 - deactivated
 
-Job 2 - EXPORT_TRAJECTORY_DATA - for project realisation 1
+Job 2 - IMPORT_TRAJECTORY_DATA - for project realisation 1
 <font color="green"><b>Completed job 2</b></font>
 <table border="1"><tr><td><b>Elapsed time</b></td><td>0:00:00.0</td></tr><tr><td><b>Total elapsed time</b></td><td>0:00:00.0</td></tr></table>
 
-Job 3, for Project realisation 1 - skipped
+Job 3 - EXPORT_TRAJECTORY_DATA - for project realisation 1
 <font color="green"><b>Completed job 3</b></font>
-
-<font color="green"><b>Completed workflow EXPORT_TW01_MD</b></font>
-<table border="1"><tr><td><b>Finish time</b></td><td>15:49:59</td></tr><tr><td><b>Elapsed time</b></td><td>0:00:00.0</td></tr></table>
-<hr /><br />
