@@ -1,4 +1,3 @@
-#include <QApplication>
 #include <QCoreApplication>
 #include <QString>
 #include <QProcess>
@@ -12,8 +11,6 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-
     int debug_level = 1;
 
     bool run_rms = true;
