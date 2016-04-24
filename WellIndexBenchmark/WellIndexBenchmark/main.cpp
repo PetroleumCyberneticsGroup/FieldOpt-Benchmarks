@@ -9,6 +9,11 @@
 #include "./src/file_handling.h"
 #include "./src/well_data_pcg.h"
 
+#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.h"
+#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
+//#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/xyzcoordinate.h"
+//#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/cell.h"
+
 int main(int argc, char *argv[])
 {
     int debug_level = 1;
@@ -95,7 +100,8 @@ int main(int argc, char *argv[])
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
        std::string strout = "\nSTART";
-       std::cout << strout << "\n" << std::string(strout.length()-1,'=') << std::endl;
+       std::string lnstr = std::string((strout.length()-1)*5,'=');
+       std::cout << lnstr + "\n" << strout << lnstr + "\n" << std::endl;
 
        qDebug("==> treating ii:%2.0d => %s", ii,
               WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
