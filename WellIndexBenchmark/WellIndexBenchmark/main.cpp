@@ -88,6 +88,12 @@ int main(int argc, char *argv[])
     QString outputf;
     bool ccode;
 
+    /* RMS LOOP
+     * Loop through well directories, transfer well data from each
+     * directory into workflow directory, compute well indices, then
+     * transfer back DATA file containing COMPDAT results
+     */
+
     for ( int ii = 0;
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
@@ -114,7 +120,7 @@ int main(int argc, char *argv[])
 
        // Copy files back to well data folder (EVENTS_TW01.DATA)
        inputf = current_path + "/workflow/EVENTS_TW01.DATA";
-       outputf = dpath + "/EVENTS_" + dname + ".DATA";
+       outputf = dpath + "/EVENTS_" + dname + "_RMS.DATA";
        ccode = CopyToFromWorkflowFolder(inputf, outputf);
        if(debug_level==2)
        {
@@ -122,5 +128,25 @@ int main(int argc, char *argv[])
        }
 
     }
+
+    /* PCG LOOP
+     * Loop through well directories, transfer well data from each
+     * directory into workflow directory, compute well indices, then
+     * transfer back DATA file containing COMPDAT results
+     */
+    for ( int ii = 0;
+          ii < WellDataPCG_.well_dirs_paths.size(); ii++)
+    {
+        // Read data from TW01.xyz file
+
+        // Compute and print well indices using PCG library
+
+    }
+
+    /* Compare DATA files
+     * Loop through each
+     */
+
+
 
 }
