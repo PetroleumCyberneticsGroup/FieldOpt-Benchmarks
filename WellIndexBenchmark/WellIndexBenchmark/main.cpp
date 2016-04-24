@@ -94,6 +94,9 @@ int main(int argc, char *argv[])
     for ( int ii = 0;
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
+       std::string strout = "\nSTART";
+       std::cout << strout << "\n" << std::string(strout.length()-1,'=') << std::endl;
+
        qDebug("==> treating ii:%2.0d => %s", ii,
               WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
 
