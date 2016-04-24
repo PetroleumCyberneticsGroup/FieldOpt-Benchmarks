@@ -36,3 +36,6 @@ Makefile*
 #RMS workflow files
 *.rmscompletions
 *.DATA
+*.dir
+TW01*
+*.log
