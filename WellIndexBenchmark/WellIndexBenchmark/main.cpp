@@ -9,8 +9,8 @@
 #include "./src/file_handling.h"
 #include "./src/well_data_pcg.h"
 
-#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.h"
-#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
+//#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.h"
+//#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
 //#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/xyzcoordinate.h"
 //#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/cell.h"
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {
     int debug_level = 1;
 
-    bool run_rms = true;
+    bool run_rms = false;
     if(argc == 3 && (strcmp(argv[2],"norms") == 0))
     {
         run_rms = false;
@@ -99,10 +99,9 @@ int main(int argc, char *argv[])
     for ( int ii = 0;
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
-       std::string strout = "\nSTART";
-       std::string lnstr = std::string((strout.length()-1)*5,'=');
-       std::cout << lnstr + "\n" << strout << lnstr + "\n" << std::endl;
-
+       std::string strout = "\nUSING RMS TO COMPUTE WELL INDICES...";
+       std::string lnstr = std::string((strout.length()-1)*2,'=');
+       std::cout << lnstr + "\n" << strout + "\n" << lnstr + "\n" << std::endl;
        qDebug("==> treating ii:%2.0d => %s", ii,
               WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
 
@@ -143,7 +142,49 @@ int main(int argc, char *argv[])
     for ( int ii = 0;
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
+        std::string strout = "USING PCG LIBRARY TO COMPUTE WELL INDICES...";
+        std::string lnstr = std::string((strout.length()-1)*2,'=');
+        std::cout << lnstr + "\n" << strout + "\n" << lnstr + "\n" << std::endl;
+
+        qDebug("==> treating ii:%2.0d => %s", ii,
+               WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
+
+        // Find and select well data file (tw*.xyz) from one folder
+        dpath = WellDataPCG_.well_dirs_paths[ii];
+        dname = WellDataPCG_.well_dirs_names[ii];
+        fname = WellDataPCG_.well_file_names[ii];
+        inputf = dpath + "/" + fname;
+//        outputf = current_path + "/workflow/TW01.xyz";
+
         // Read data from TW01.xyz file
+        QFile inputFile(inputf);
+        if (inputFile.open(QIODevice::ReadOnly))
+        {
+           QTextStream in(&inputFile);
+
+           QVector3D line1 = in.readAll();
+           qDebug() << "readall" << line1;
+
+//        void GeometryFunctions::print_well_index_file(
+//            Model::Reservoir::Grid::Grid *grid,
+//            QList<QVector3D *> start_points,
+//            QList<QVector3D *> end_points,
+//            double wellbore_radius,
+//            double min_wi,
+//            string filename);
+
+//           in.reset();
+//           while (!in.atEnd())
+//           {
+//              QString line2 = in.readLine();
+//              qDebug() << "readline" << line2;
+//           }
+
+
+
+           inputFile.close();
+        }
+
 
         // Compute and print well indices using PCG library
 
