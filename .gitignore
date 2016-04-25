@@ -34,12 +34,12 @@ Makefile*
 *.qmlproject.user.*
 
 #RMS workflow files
-*.rmscompletions
-*.DATA
+# *.rmscompletions
+# *.DATA
 *.dir
-*.sh
-TW01*
-workflow.log
+# *.sh
+# TW01*
+# workflow.log
 wellindexbenchmark
 
 
