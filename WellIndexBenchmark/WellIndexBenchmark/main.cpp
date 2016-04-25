@@ -192,7 +192,6 @@ int main(int argc, char *argv[])
 
             double wellbore_radius = 0.1905/2;
             double min_wi = 0.0001;
-            string filename = "Well_index_output";
 
             QString file_path_ = "../../../../../../Models/1x1_CGpaper_5_well_model/eclipse/ECL_5SPOT.EGRID";
             Model::Reservoir::Grid::Grid *grid_;
@@ -203,10 +202,13 @@ int main(int argc, char *argv[])
             start_points.append(start_well);
             end_points.append(end_well);
 
+            outputf = dpath + "/EVENTS_" + dname + "_WELL_INDEX_CALC.DATA";
+            string filename = outputf.toUtf8().constData();
+
 
             WellIndexCalculator::GeometryFunctions::print_well_index_file(grid_, start_points, end_points, wellbore_radius, min_wi, filename);
 
-//outputf = dpath + "/EVENTS_" + dname + "_RMS.DATA";
+
 
 
 //           in.reset();
