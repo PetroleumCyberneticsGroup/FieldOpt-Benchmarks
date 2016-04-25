@@ -3,25 +3,27 @@
 # Project created by QtCreator 2016-03-15T14:28:43
 #
 #-------------------------------------------------
+include(local_paths.pri)
 
 QT       += core
 
 QT       += gui
 
 QT       += widgets
-
 TARGET = wellindexbenchmark
+CONFIG += c++11
 CONFIG   += console
 CONFIG   -= app_bundle
 
 #LIBS += -L/usr/lib -lboost_system -lboost_filesystem
 #LIBS += -lcurses
-LIBS += -L/home/cutie/Documents/git/FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
-#LIBS += -L$$OUT_PWD/../../../../../../FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
-LIBS += -L$$OUT_PWD/../../ERTWrapper -lertwrapper
-LIBS += -L$$OUT_PWD/../../Model -lmodel
+#LIBS += -L/home/cutie/Documents/git/FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
+LIBS += -L$$FIELDOPT_BIN_PATH/WellIndexCalculator -lWellIndexCalculator
+LIBS += -L$$FIELDOPT_BIN_PATH/ERTWrapper -lertwrapper
+LIBS += -L$$FIELDOPT_BIN_PATH/Model -lmodel
 LIBS += -larmadillo
 LIBS += -lrpoly_plus_plus
+INCLUDEPATH += $$FIELDOPT_LIB_PATH
 
 TEMPLATE = app
 

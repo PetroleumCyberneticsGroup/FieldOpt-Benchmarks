@@ -4,16 +4,19 @@
 #include <QtDebug>
 #include <iostream>
 #include <QVector3D>
+#include <string>
 #include "./src/test_wells.h"
 #include "./src/well_pcg.h"
 #include "./src/well_rms.h"
 #include "./src/file_handling.h"
 #include "./src/well_data_pcg.h"
 
-//#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.h"
-//#include "../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
-//#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/xyzcoordinate.h"
-//#include "../../../FieldOpt/FieldOpt/Model/reservoir/grid/cell.h"
+#include "Model/reservoir/grid/xyzcoordinate.h"
+#include "Model/reservoir/grid/cell.h"
+#include "Model/reservoir/grid/eclgrid.h"
+#include "WellIndexCalculator/geometry_functions/geometryfunctions.h"
+#include "WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -161,38 +164,48 @@ int main(int argc, char *argv[])
         QFile inputFile(inputf);
         if (inputFile.open(QIODevice::ReadOnly))
         {
-           QTextStream in(&inputFile);
+            QTextStream in(&inputFile);
 
-           // Read complete file to QString
-           QString all_lines = in.readAll();
+            // Read complete file to QString
+            QString all_lines = in.readAll();
 
-           // Split file at newline
-           QStringList pieces = all_lines.split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
-           qDebug() << "all_lines(0) = " << pieces.value(0);
-           qDebug() << "all_lines(1) = " << pieces.value(1);
-           qDebug() << "all_lines(2) = " << pieces.value(2);
+            // Split file at newline
+            QStringList pieces = all_lines.split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
+            qDebug() << "all_lines(0) = " << pieces.value(0);
+            qDebug() << "all_lines(1) = " << pieces.value(1);
+            qDebug() << "all_lines(2) = " << pieces.value(2);
 
-           // Second and third lines contain well placement coordinates
-           // Simplyfy removes unecessary spaces at beginning and end.
-           QString first_vec = pieces.value(1).simplified();
-           QString second_vec = pieces.value(2).simplified();
+            // Second and third lines contain well placement coordinates
+            // Simplyfy removes unecessary spaces at beginning and end.
+            QString first_vec = pieces.value(1).simplified();
+            QString second_vec = pieces.value(2).simplified();
 
-           // Separate coordinates at spaces and add to QVector3D
-           QVector3D start_well = QVector3D(first_vec.split(" ").at(0).toFloat(), first_vec.split(" ").at(1).toFloat() ,first_vec.split(" ").at(2).toFloat());
-           QVector3D end_well = QVector3D(second_vec.split(" ").at(0).toFloat(), second_vec.split(" ").at(1).toFloat() ,second_vec.split(" ").at(2).toFloat());
+            // Separate coordinates at spaces and add to QVector3D
+            QVector3D* start_well =new QVector3D(first_vec.split(" ").at(0).toFloat(), first_vec.split(" ").at(1).toFloat() ,first_vec.split(" ").at(2).toFloat());
+            QVector3D* end_well =new QVector3D(second_vec.split(" ").at(0).toFloat(), second_vec.split(" ").at(1).toFloat() ,second_vec.split(" ").at(2).toFloat());
 
-           qDebug() << "QVector start_well = " << start_well;
-           qDebug() << "QVector end_well = " << end_well;
+            qDebug() << "QVector start_well = " << *start_well;
+            qDebug() << "QVector end_well = " << *end_well;
 
 
-        /*void GeometryFunctions::print_well_index_file(
-            Model::Reservoir::Grid::Grid *grid,
-            QList<QVector3D *> start_points,
-            QList<QVector3D *> end_points,
-            double wellbore_radius,
-            double min_wi,
-            string filename);
-        */
+            //Setup grid and variables needed to run Well Index calculations
+
+            double wellbore_radius = 0.1905/2;
+            double min_wi = 0.0001;
+            string filename = "Well_index_output";
+
+            QString file_path_ = "../../../../../../Models/1x1_CGpaper_5_well_model/eclipse/ECL_5SPOT.EGRID";
+            Model::Reservoir::Grid::Grid *grid_;
+            grid_ = new Model::Reservoir::Grid::ECLGrid(file_path_);
+
+            QList<QVector3D*> start_points;
+            QList<QVector3D*> end_points;
+            start_points.append(start_well);
+            end_points.append(end_well);
+
+
+            WellIndexCalculator::GeometryFunctions::print_well_index_file(grid_, start_points, end_points, wellbore_radius, min_wi, filename);
+
 //outputf = dpath + "/EVENTS_" + dname + "_RMS.DATA";
 
 
