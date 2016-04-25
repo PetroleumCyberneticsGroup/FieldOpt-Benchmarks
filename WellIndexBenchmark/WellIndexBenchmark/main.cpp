@@ -3,6 +3,7 @@
 #include <QProcess>
 #include <QtDebug>
 #include <iostream>
+#include <QVector3D>
 #include "./src/test_wells.h"
 #include "./src/well_pcg.h"
 #include "./src/well_rms.h"
@@ -162,16 +163,38 @@ int main(int argc, char *argv[])
         {
            QTextStream in(&inputFile);
 
-           QVector3D line1 = in.readAll();
-           qDebug() << "readall" << line1;
+           // Read complete file to QString
+           QString all_lines = in.readAll();
 
-//        void GeometryFunctions::print_well_index_file(
-//            Model::Reservoir::Grid::Grid *grid,
-//            QList<QVector3D *> start_points,
-//            QList<QVector3D *> end_points,
-//            double wellbore_radius,
-//            double min_wi,
-//            string filename);
+           // Split file at newline
+           QStringList pieces = all_lines.split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
+           qDebug() << "all_lines(0) = " << pieces.value(0);
+           qDebug() << "all_lines(1) = " << pieces.value(1);
+           qDebug() << "all_lines(2) = " << pieces.value(2);
+
+           // Second and third lines contain well placement coordinates
+           // Simplyfy removes unecessary spaces at beginning and end.
+           QString first_vec = pieces.value(1).simplified();
+           QString second_vec = pieces.value(2).simplified();
+
+           // Separate coordinates at spaces and add to QVector3D
+           QVector3D start_well = QVector3D(first_vec.split(" ").at(0).toFloat(), first_vec.split(" ").at(1).toFloat() ,first_vec.split(" ").at(2).toFloat());
+           QVector3D end_well = QVector3D(second_vec.split(" ").at(0).toFloat(), second_vec.split(" ").at(1).toFloat() ,second_vec.split(" ").at(2).toFloat());
+
+           qDebug() << "QVector start_well = " << start_well;
+           qDebug() << "QVector end_well = " << end_well;
+
+
+        /*void GeometryFunctions::print_well_index_file(
+            Model::Reservoir::Grid::Grid *grid,
+            QList<QVector3D *> start_points,
+            QList<QVector3D *> end_points,
+            double wellbore_radius,
+            double min_wi,
+            string filename);
+        */
+//outputf = dpath + "/EVENTS_" + dname + "_RMS.DATA";
+
 
 //           in.reset();
 //           while (!in.atEnd())

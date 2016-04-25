@@ -16,6 +16,12 @@ CONFIG   -= app_bundle
 
 #LIBS += -L/usr/lib -lboost_system -lboost_filesystem
 #LIBS += -lcurses
+LIBS += -L/home/cutie/Documents/git/FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
+#LIBS += -L$$OUT_PWD/../../../../../../FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
+LIBS += -L$$OUT_PWD/../../ERTWrapper -lertwrapper
+LIBS += -L$$OUT_PWD/../../Model -lmodel
+LIBS += -larmadillo
+LIBS += -lrpoly_plus_plus
 
 TEMPLATE = app
 
