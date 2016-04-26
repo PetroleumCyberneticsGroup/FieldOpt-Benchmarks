@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
             end_points.append(end_well);
 
             outputf = dpath + "/EVENTS_" + dname + "_WELL_INDEX_CALC.DATA";
-            string filename = outputf.toUtf8().constData();
+            QString filename = outputf;
 
 
             WellIndexCalculator::GeometryFunctions::print_well_index_file(grid_, start_points, end_points, wellbore_radius, min_wi, filename);
