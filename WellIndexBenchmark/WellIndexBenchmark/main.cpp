@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
     int debug_level = 1;
 
-    bool run_rms = false;
+    bool run_rms = true;
     if(argc == 3 && (strcmp(argv[2],"norms") == 0))
     {
         run_rms = false;
@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
             start_points.append(start_well);
             end_points.append(end_well);
 
-            outputf = dpath + "/EVENTS_" + dname + "_WELL_INDEX_CALC.DATA";
+            outputf = dpath + "/EVENTS_" + dname + "_PCG.DATA";
             QString filename = outputf;
 
 
