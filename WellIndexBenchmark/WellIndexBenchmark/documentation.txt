@@ -1,0 +1,18 @@
+# WellIndexBenchmark
+This is the documentation for WellIndexBenchmarks.
+
+it benchmarks well indices computed with FieldOpt's WellIndexCalculator to those 
+computed using Roxar's RMS for a selected set of well trajectories.
+
+
+An eclipse generated output will be needed for RMS to
+be able to read in the data and compute well indices.
+This file will be read by both RMS and WellIndexCalculator.
+The path is set inside the main.cpp and also in the RMS workflow.
+
+
+
+
+Wells need to be specified in wells
+
+
