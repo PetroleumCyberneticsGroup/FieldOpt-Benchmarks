@@ -11,18 +11,22 @@
 #include "./src/file_handling.h"
 #include "./src/well_data_pcg.h"
 
-#include "Model/reservoir/grid/xyzcoordinate.h"
-#include "Model/reservoir/grid/cell.h"
-#include "Model/reservoir/grid/eclgrid.h"
-#include "WellIndexCalculator/geometry_functions/geometryfunctions.h"
-#include "WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
+#include "../FieldOpt-old/Model/reservoir/grid/xyzcoordinate.h"
+#include "../FieldOpt-old/Model/reservoir/grid/cell.h"
+#include "../FieldOpt-old/Model/reservoir/grid/eclgrid.h"
+#include "../FieldOpt-old/WellIndexCalculator/geometry_functions/geometryfunctions.h"
+#include "../FieldOpt-old/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.h"
+
+//RUN EXAMPLE:
+
+//LIB="../../build-FieldOpt-old/"; LD_LIBRARY_PATH=${LIB}"/ERTWrapper":${LIB}"/WellIndexCalculator":${LIB}"/Utilities":${LIB}"/Model" ../../build-WellIndexBenchmark-Desktop-Debug/wellindexbenchmark all
 
 
 int main(int argc, char *argv[])
 {
     int debug_level = 1;
 
-    bool run_rms = true;
+    bool run_rms = false;
     if(argc == 3 && (strcmp(argv[2],"norms") == 0))
     {
         run_rms = false;
@@ -193,7 +197,7 @@ int main(int argc, char *argv[])
             double wellbore_radius = 0.1905/2;
             double min_wi = 0.0001;
 
-            QString file_path_ = "../../../../../../Models/1x1_CGpaper_5_well_model/eclipse/ECL_5SPOT.EGRID";
+            QString file_path_ = "../../WellIndexBenchmark/model/5spot/ECL_5SPOT.EGRID";
             Model::Reservoir::Grid::Grid *grid_;
             grid_ = new Model::Reservoir::Grid::ECLGrid(file_path_);
 
