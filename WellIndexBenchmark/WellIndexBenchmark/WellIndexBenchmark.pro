@@ -3,19 +3,29 @@
 # Project created by QtCreator 2016-03-15T14:28:43
 #
 #-------------------------------------------------
+include(local_paths.pri)
+
+FIELDOPT_BIN_PATH=../../WellIndexBenchmark/build-FieldOpt-old
 
 QT       += core
 
 QT       += gui
 
 QT       += widgets
-
 TARGET = wellindexbenchmark
+CONFIG += c++11
 CONFIG   += console
 CONFIG   -= app_bundle
 
 #LIBS += -L/usr/lib -lboost_system -lboost_filesystem
 #LIBS += -lcurses
+LIBS += -L$$FIELDOPT_BIN_PATH/WellIndexCalculator -lWellIndexCalculator
+LIBS += -L$$FIELDOPT_BIN_PATH/ERTWrapper -lertwrapper
+LIBS += -L$$FIELDOPT_BIN_PATH/Model -lmodel
+LIBS += -L$$FIELDOPT_BIN_PATH/Utilities -lutilities
+LIBS += -larmadillo
+LIBS += -lrpoly_plus_plus
+INCLUDEPATH += $$FIELDOPT_LIB_PATH
 
 TEMPLATE = app
 
@@ -53,3 +63,6 @@ HEADERS += \
 #    ../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.cpp \
 #    ../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.cpp \
 #    ../../../FieldOpt/FieldOpt/Model/reservoir/grid/xyzcoordinate.cpp
+
+DISTFILES += \
+    local_paths.pri
