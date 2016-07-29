@@ -5,6 +5,8 @@
 #-------------------------------------------------
 include(local_paths.pri)
 
+FIELDOPT_BIN_PATH=../../WellIndexBenchmark/build-FieldOpt-old
+
 QT       += core
 
 QT       += gui
@@ -17,10 +19,10 @@ CONFIG   -= app_bundle
 
 #LIBS += -L/usr/lib -lboost_system -lboost_filesystem
 #LIBS += -lcurses
-#LIBS += -L/home/cutie/Documents/git/FieldOpt/FieldOpt/WellIndexCalculator -lWellIndexCalculator
 LIBS += -L$$FIELDOPT_BIN_PATH/WellIndexCalculator -lWellIndexCalculator
 LIBS += -L$$FIELDOPT_BIN_PATH/ERTWrapper -lertwrapper
 LIBS += -L$$FIELDOPT_BIN_PATH/Model -lmodel
+LIBS += -L$$FIELDOPT_BIN_PATH/Utilities -lutilities
 LIBS += -larmadillo
 LIBS += -lrpoly_plus_plus
 INCLUDEPATH += $$FIELDOPT_LIB_PATH
@@ -61,3 +63,6 @@ HEADERS += \
 #    ../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions.cpp \
 #    ../../../FieldOpt/FieldOpt/WellIndexCalculator/geometry_functions/geometryfunctions_exceptions.cpp \
 #    ../../../FieldOpt/FieldOpt/Model/reservoir/grid/xyzcoordinate.cpp
+
+DISTFILES += \
+    local_paths.pri
