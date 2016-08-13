@@ -5,7 +5,8 @@
 #-------------------------------------------------
 include(local_paths.pri)
 
-FIELDOPT_BIN_PATH=../../WellIndexBenchmark/build-FieldOpt-old
+# FIELDOPT_BIN_PATH=../../WellIndexBenchmark/build-FieldOpt-old
+FIELDOPT_BIN_PATH=../../WellIndexBenchmark/build-FieldOpt-old-Desktop_Qt_5_4_1_GCC_64bit-Debug
 
 QT       += core
 
