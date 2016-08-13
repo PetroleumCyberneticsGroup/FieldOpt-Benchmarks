@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 {
     int debug_level = 1;
 
-    bool run_rms = false;
+    bool run_rms = true;
     if(argc == 3 && (strcmp(argv[2],"norms") == 0))
     {
         run_rms = false;
