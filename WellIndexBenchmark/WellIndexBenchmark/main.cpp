@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
     QString fname;
     QString inputf;
     QString outputf;
+    std::vector<int> RMSresults;
     bool ccode;
 
     /* RMS LOOP
@@ -109,7 +110,7 @@ int main(int argc, char *argv[])
     {
        std::string strout = "\nUSING RMS TO COMPUTE WELL INDICES...";
        std::string lnstr = std::string((strout.length()-1)*2,'=');
-       std::cout << lnstr + "\n" << strout + "\n" << lnstr + "\n" << std::endl;
+       std::cout << "\n\033[1;33m" << lnstr + "" << strout + "\n" << lnstr + "\033[0m\n" << std::endl;
        qDebug("==> treating ii:%2.0d => %s", ii,
               WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
 
@@ -129,7 +130,13 @@ int main(int argc, char *argv[])
 
        // Call RMS workflow for current file
        int ecode = RunRMS(current_path,run_rms);
-       qDebug() << "exit code from running RMS: " << ecode;
+       std::cout << "\033[1;31m" << lnstr << "\033[0m\n";
+       std::cout << "\033[1;31m" << "exit code from running RMS: >>> " 
+                                 << ecode 
+                                 << " <<< for well " << ii << " : " << fname.toStdString()
+                                 << """\033[0m\n";
+       std::cout << "\033[1;31m" << lnstr << "\033[0m\n";
+       RMSresults.push_back(ecode);
 
        // Copy files back to well data folder (EVENTS_TW01.DATA)
        inputf = current_path + "/workflow/EVENTS_TW01.DATA";
@@ -142,6 +149,11 @@ int main(int argc, char *argv[])
 
     }
 
+    std::cout << "\033[1;31mALL RMS RESULTS: \033[0m";
+    for ( unsigned int ii = 0; ii < RMSresults.size(); ++ii){
+       std::cout << "\033[1;31m" << RMSresults[ii] << " \033[0m";
+    }
+
     /* PCG LOOP
      * Loop through well directories, transfer well data from each
      * directory into workflow directory, compute well indices, then
@@ -150,9 +162,9 @@ int main(int argc, char *argv[])
     for ( int ii = 0;
           ii < WellDataPCG_.well_dirs_paths.size(); ii++)
     {
-        std::string strout = "USING PCG LIBRARY TO COMPUTE WELL INDICES...";
+        std::string strout = "\nUSING PCG LIBRARY TO COMPUTE WELL INDICES...";
         std::string lnstr = std::string((strout.length()-1)*2,'=');
-        std::cout << lnstr + "\n" << strout + "\n" << lnstr + "\n" << std::endl;
+        std::cout << "\n\033[1;33m" << lnstr + "" << strout + "\n" << lnstr + "\033[0m\n" << std::endl;
 
         qDebug("==> treating ii:%2.0d => %s", ii,
                WellDataPCG_.well_dirs_paths[ii].toStdString().c_str());
@@ -162,9 +174,9 @@ int main(int argc, char *argv[])
         dname = WellDataPCG_.well_dirs_names[ii];
         fname = WellDataPCG_.well_file_names[ii];
         inputf = dpath + "/" + fname;
-//        outputf = current_path + "/workflow/TW01.xyz";
 
         // Read data from TW01.xyz file
+        qDebug() << "Reading file for PCG computation:" << inputf;
         QFile inputFile(inputf);
         if (inputFile.open(QIODevice::ReadOnly))
         {
@@ -194,8 +206,8 @@ int main(int argc, char *argv[])
 
             //Setup grid and variables needed to run Well Index calculations
 
-            double wellbore_radius = 0.1905/2;
-            double min_wi = 0.0001;
+            double wellbore_radius = 0.191/2;
+            double min_wi = 1e-12;
 
             QString file_path_ = "../../WellIndexBenchmark/model/5spot/ECL_5SPOT.EGRID";
             Model::Reservoir::Grid::Grid *grid_;
