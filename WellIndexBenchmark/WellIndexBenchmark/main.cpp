@@ -138,6 +138,10 @@ int main(int argc, char *argv[])
        std::cout << "\033[1;31m" << lnstr << "\033[0m\n";
        RMSresults.push_back(ecode);
 
+       if (ecode != 0){
+         throw std::runtime_error("RMS DID NOT FIND THE WCF FOR THIS WELL!!! STOPPING...");
+        }
+
        // Copy files back to well data folder (EVENTS_TW01.DATA)
        inputf = current_path + "/workflow/EVENTS_TW01.DATA";
        outputf = dpath + "/EVENTS_" + dname + "_RMS.DATA";
