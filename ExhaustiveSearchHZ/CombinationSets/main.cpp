@@ -1,8 +1,27 @@
+/******************************************************************************
+   Copyright (C) 2017 Mathias C. Bellout <mathias.bellout@ntnu.no>
+
+   This file is part of the FieldOpt-Benchmarks project,
+   an NTNU Petroleum Cybernetics Group project.
+
+   FieldOpt-Benchmarks is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   FieldOpt-Benchmarks is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with FieldOpt-Benchmarks.  If not, see <http://www.gnu.org/licenses/>.
+******************************************************************************/
+
 #include <iostream>
 #include <vector>
 #include <numeric>
 #include <cassert>
-# include <chrono>
 
 #include <QFile>
 #include <QString>
@@ -12,13 +31,14 @@
 #include <QProcess>
 
 #include "src/for_each_permutation.h"
+#include "src/utilities.hpp"
 #include "../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
-#include "../../../FieldOpt/FieldOpt/Utilities/time.hpp"
+
 
 using namespace std;
 
 // ============================================================
-class func_at_each_perm
+class f_at_each_combination
 {
   unsigned len;
   std::uint64_t count;
@@ -26,14 +46,14 @@ class func_at_each_perm
 
  public:
 
-  explicit func_at_each_perm(unsigned l, QString file_path_) : len(l), count(0) {
+  explicit f_at_each_combination(unsigned l, QString file_path_) : len(l), count(0) {
       file_path = file_path_;
       Utilities::FileHandling::CreateFile(file_path, true);
   }
 
   operator std::uint64_t() const {return count;}
 
-  // called for each permutation
+  // called for eac20170226-WP-NHowe-Where-did-Steve-Bannon-get-his-worldview_From-my-book.pdfh permutation
   template <class It> bool operator()(It first, It last)
   {
       ++count;
@@ -61,73 +81,7 @@ class func_at_each_perm
   }
 };
 
-// ============================================================
-QString getSetFilename(const int n, int Z){
 
-    QString n_str, Z_str;
-    n_str = QString("n%1").arg(n, 3, 10, QChar('0'));
-
-    if (Z < 1e3){
-        Z_str = QString("-Z%1").arg(Z, 6, 10, QChar('0'));
-    }else if(Z > 1e3 && Z < 1e6){
-        Z_str = QString("-Z%1").arg(Z, 6, 10, QChar('0'));
-    }else{
-        Z_str = QString("-Z%1").arg(Z, 'E', QChar('0'));
-    }
-
-    QString file_path = "../combinations/" + n_str + "-C-" + Z_str + ".cSet";
-
-    return file_path;
-}
-
-// ============================================================
-std::vector<double> get_elapsed_time(QDateTime t_start){
-
-    auto t_duration_ms = (double)time_since_milliseconds(t_start);
-    std::vector<double> time_vector;
-
-    time_vector.push_back(t_duration_ms); // milliseconds
-    time_vector.push_back(t_duration_ms/1000); // seconds
-    time_vector.push_back(t_duration_ms/1000/60); // minutes
-    time_vector.push_back(t_duration_ms/1000/60/60); // hours
-    time_vector.push_back(t_duration_ms/1000/60/60/24); // days
-
-    return time_vector;
-}
-
-// ============================================================
-void print_to_log(QString log_file, QDateTime t_start){
-
-    // --------------------------------------------------------
-    // date
-    QString log_str;
-    log_str = t_start.toString("dd.mm.yyyy HH:MM:SS") + "\n";
-
-    // --------------------------------------------------------
-    // cpu info
-    QString cpu_str = "cat /proc/cpuinfo | grep "
-        "\"model name\" -m1 | awk -F \":\" '{print $2}' ";
-
-    QProcess process;
-    process.start("bash", QStringList() << "-c" << cpu_str);
-
-    process.waitForFinished(10);
-
-    QString stdout = process.readAllStandardOutput();
-    QString stderr = process.readAllStandardError();
-
-    // debug
-    // cout << "stdout: " << stdout.toStdString() << endl;
-    // cout << "stderr: " << stderr.toStdString() << endl;
-
-    if (stdout.at(0) == QChar::fromLatin1(' '));
-        stdout = stdout.mid(1);
-    log_str = log_str + stdout + "\n";
-
-    // --------------------------------------------------------
-    // print to log file
-    Utilities::FileHandling::WriteLineToFile(log_str, log_file);
-}
 
 // ============================================================
 int main() {
@@ -162,7 +116,7 @@ int main() {
         for_each_reversible_permutation(v.begin(),
                                         v.begin() + r,
                                         v.end(),
-                                        func_at_each_perm(v.size(),file_path));
+                                        f_at_each_combination(v.size(),file_path));
 
     auto elapsed_time = get_elapsed_time(t_start);
 
@@ -184,5 +138,4 @@ int main() {
               << elapsed_time[3] << " hours\n"
               << elapsed_time[4] << " days\n";
 
-    return 0;
 }
