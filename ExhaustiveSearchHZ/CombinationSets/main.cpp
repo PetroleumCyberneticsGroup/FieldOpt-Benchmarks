@@ -99,14 +99,15 @@ int main() {
 
     // ------------------------------------------------------------
     // Print to log
-    QString log_file = "../../combinations/runtimes";
+    auto host_str = getHostname();
+    QString log_file = "../../combinations/runtimes-" + host_str[0] + ".log";
     std::cout << "selection, r = " << r << std::endl
               << "sampling grid (1D), n = " << n << std::endl
               << "sampling grid (2D), N = n^2 = " << N << std::endl
               << "# of combinations (reverse), Z = (N-1)*N/2 = " << Z << std::endl;
 
     auto t_start = QDateTime::currentDateTime();
-    print_to_log(log_file, t_start);
+    print_to_log(log_file, t_start, file_path);
 
     // ------------------------------------------------------------
     // Find combinations
@@ -118,6 +119,7 @@ int main() {
                                         f_at_each_combination(v.size(),file_path));
 
     auto elapsed_time = get_elapsed_time(t_start);
+    Utilities::FileHandling::WriteLineToFile(elapsed_time, log_file);
 
     // ------------------------------------------------------------
     // Sanity check
@@ -130,11 +132,6 @@ int main() {
     std::cout << "Found " << count << " permutations of " << v.size()
               << " objects taken " << r << " at a time.\n\n";
 
-    std::cout << "Elapsed time: \n"
-              << elapsed_time[0] << " milliseconds\n"
-              << elapsed_time[1] << " seconds\n"
-              << elapsed_time[2] << " minutes\n"
-              << elapsed_time[3] << " hours\n"
-              << elapsed_time[4] << " days\n";
+
 
 }

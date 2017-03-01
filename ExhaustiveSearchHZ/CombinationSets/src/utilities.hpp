@@ -32,18 +32,36 @@
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 
 // ============================================================
-std::vector<double> get_elapsed_time(QDateTime t_start){
+QString get_elapsed_time(QDateTime t_start){
 
+    QString time_str;
     auto t_duration_ms = (double)time_since_milliseconds(t_start);
-    std::vector<double> time_vector;
+    // std::vector<double> time_vector;
 
-    time_vector.push_back(t_duration_ms); // milliseconds
-    time_vector.push_back(t_duration_ms/1000); // seconds
-    time_vector.push_back(t_duration_ms/1000/60); // minutes
-    time_vector.push_back(t_duration_ms/1000/60/60); // hours
-    time_vector.push_back(t_duration_ms/1000/60/60/24); // days
+    // time_vector.push_back(t_duration_ms); // milliseconds
+    // time_vector.push_back(t_duration_ms/1000); // seconds
+    // time_vector.push_back(t_duration_ms/1000/60); // minutes
+    // time_vector.push_back(t_duration_ms/1000/60/60); // hours
+    // time_vector.push_back(t_duration_ms/1000/60/60/24); // days
 
-    return time_vector;
+    // time_str = "Elapsed time: \n"
+    //           + QString::number(t_duration_ms,'E',3) + " "
+    //           + QString::number(time_vector[1],'E',3) + " seconds\n"
+    //           + QString::number(time_vector[2],'E',3) + " minutes\n"
+    //           + QString::number(time_vector[3],'E',3) + " hours\n"
+    //           + QString::number(time_vector[4],'E',3) + " days\n";
+
+    QString t_ms, t_s, t_m, t_h, t_d;
+
+    t_ms = QString("%6.1f milliseconds\n").arg(t_duration_ms);
+    t_s  = QString("%6.1f seconds\n").arg(t_duration_ms/1000);
+    t_m  = QString("%6.1f minutes\n").arg(t_duration_ms/1000/60);
+    t_h  = QString("%6.1f hours\n").arg(t_duration_ms/1000/60);
+    t_d  = QString("%6.1f days\n").arg(t_duration_ms/1000/60/60/24);
+
+    time_str = "Elapsed time: \n" + t_ms + t_s + t_m  + t_h  + t_d;
+
+    return time_str;
 }
 
 // ============================================================
@@ -52,10 +70,32 @@ QString getDateStr(QDateTime t_start){
     return log_str;
 }
 
+// ============================================================
+QString getFileSize(QString file_path){
+    auto file_sz = (double)Utilities::FileHandling::GetFileSize(file_path.toStdString());
+
+    // Conversions
+    // 1 kB = 1 kilo byte = 1000 B
+    // 1 KB (eller KiB) = 1 kibi byte = 1024 B
+    // 1 mB = 1 mega byte = 1000^2 B
+    // 1 MB (eller MiB) = 1 mebi byte = 1024^2 B
+
+    QString fs_B, fs_KiB, fs_MiB, fs_GiB;
+
+    fs_B   = QString("%6.0f bytes (B)\n").arg(file_sz);
+    fs_KiB = QString("%6.0f KiB \n").arg(file_sz/pow(1024,1)); // (1 kibiB = 1024 B)
+    fs_MiB = QString("%6.0f MiB \n").arg(file_sz/pow(1024,2)); // (1 mebiB = 1024^2 B)
+    fs_GiB = QString("%6.0f MiB \n").arg(file_sz/pow(1024,3)); // (1 gebiB = 1024^3 B)
+
+    QString size_str = "File Size:\n" + fs_B + fs_KiB + fs_MiB + fs_GiB;
+
+    return size_str;
+}
 
 // ============================================================
-QString getHostname(){
+QStringList getHostname(){
 
+    QStringList host_strs;
     QProcess process;
     process.start("bash", QStringList() << "-c" << "hostname");
 
@@ -67,7 +107,10 @@ QString getHostname(){
     stdout.remove(QRegExp("\n"));
     QString host_str = "Hostname: " + stdout + "\n";
 
-    return host_str;
+    host_strs << stdout;
+    host_strs << host_str;
+
+    return host_strs;
 }
 
 // ============================================================
@@ -84,19 +127,17 @@ QString getCpuInfo(){
     QString stdout = process.readAllStandardOutput();
     QString stderr = process.readAllStandardError();
 
-    // debug
-    // cout << "stdout: " << stdout.toStdString() << endl;
-    // cout << "stderr: " << stderr.toStdString() << endl;
-
     if (stdout.startsWith(" "));
     stdout = stdout.mid(1);
 
-    QString cpu_str = "Processor: " + stdout + "\n";
+    QString cpu_str = "Processor: " + stdout;
     return cpu_str;
 }
 
 // ============================================================
-void print_to_log(QString log_file, QDateTime t_start){
+void print_to_log(QString log_file,
+                  QDateTime t_start,
+                  QString file_path){
 
     QString log_str;
 
@@ -113,10 +154,14 @@ void print_to_log(QString log_file, QDateTime t_start){
     auto host_str = getHostname();
 
     // --------------------------------------------------------
+    // file size
+    auto size_str = getFileSize(file_path);
+
+    // --------------------------------------------------------
     // print to log file
-    log_str = QString(50, '-') + "\n" + date_str + host_str + cpu_str + "\n";
-    std::cout << log_str.toStdString();
-    Utilities::FileHandling::WriteLineToFile(log_str, log_file);
+    log_str = QString(50, '-') + "\n"
+        + date_str + host_str[1] + cpu_str + size_str;
+    Utilities::FileHandling::WriteLineToFile(log_str, log_file, false);
 }
 
 // ============================================================
