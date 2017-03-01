@@ -54,13 +54,30 @@ QString getDateStr(QDateTime t_start){
 
 
 // ============================================================
+QString getHostname(){
+
+    QProcess process;
+    process.start("bash", QStringList() << "-c" << "hostname");
+
+    process.waitForFinished(10);
+
+    QString stdout = process.readAllStandardOutput();
+    QString stderr = process.readAllStandardError();
+
+    stdout.remove(QRegExp("\n"));
+    QString host_str = "Hostname: " + stdout + "\n";
+
+    return host_str;
+}
+
+// ============================================================
 QString getCpuInfo(){
 
-    QString cpu_str = "cat /proc/cpuinfo | grep "
+    QString cmd_str = "cat /proc/cpuinfo | grep "
         "\"model name\" -m1 | awk -F \":\" '{print $2}' ";
 
     QProcess process;
-    process.start("bash", QStringList() << "-c" << cpu_str);
+    process.start("bash", QStringList() << "-c" << cmd_str);
 
     process.waitForFinished(10);
 
@@ -72,9 +89,10 @@ QString getCpuInfo(){
     // cout << "stderr: " << stderr.toStdString() << endl;
 
     if (stdout.startsWith(" "));
-    stdout = stdout.mid(1) + "\n";
+    stdout = stdout.mid(1);
 
-    return stdout;
+    QString cpu_str = "Processor: " + stdout + "\n";
+    return cpu_str;
 }
 
 // ============================================================
@@ -91,8 +109,13 @@ void print_to_log(QString log_file, QDateTime t_start){
     auto cpu_str = getCpuInfo();
 
     // --------------------------------------------------------
+    // hostname
+    auto host_str = getHostname();
+
+    // --------------------------------------------------------
     // print to log file
-    log_str = date_str + cpu_str + "\n";
+    log_str = QString(50, '-') + "\n" + date_str + host_str + cpu_str + "\n";
+    std::cout << log_str.toStdString();
     Utilities::FileHandling::WriteLineToFile(log_str, log_file);
 }
 
@@ -103,7 +126,7 @@ QString getSetFilename(const int n, int Z){
     n_str.sprintf("n%03.0f",(double)n);
     Z_str.sprintf("-Z%07.3E",(double)Z);
 
-    QString file_path = "../combinations/"
+    QString file_path = "../../combinations/"
         + n_str + Z_str + "_cpp.cSet";
 
     return file_path;

@@ -53,7 +53,6 @@ class f_at_each_combination
 
   operator std::uint64_t() const {return count;}
 
-  // called for eac20170226-WP-NHowe-Where-did-Steve-Bannon-get-his-worldview_From-my-book.pdfh permutation
   template <class It> bool operator()(It first, It last)
   {
       ++count;
@@ -100,7 +99,7 @@ int main() {
 
     // ------------------------------------------------------------
     // Print to log
-    QString log_file = "../combinations/runtimes";
+    QString log_file = "../../combinations/runtimes";
     std::cout << "selection, r = " << r << std::endl
               << "sampling grid (1D), n = " << n << std::endl
               << "sampling grid (2D), N = n^2 = " << N << std::endl

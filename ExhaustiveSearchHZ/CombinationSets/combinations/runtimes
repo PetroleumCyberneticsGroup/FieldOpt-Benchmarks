@@ -1,11 +1,18 @@
-28.35.2017 15:02:SS
-cat /proc/cpuinfo | grep "model name" -m1 | awk -F ":" '{print $2}' 
-28.36.2017 15:02:SS
- Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
-
-28.57.2017 15:02:SS
+01.35.2017 10:03:SS
 Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
 
-28.19.2017 21:02:SS
-Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
+01.39.2017 10:03:SS
+Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
+
+--------------------------------------------------
+01.40.2017 10:03:SS
+Hostname: bellout-Z9PE-WSP
+Processor: Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
+
+
+--------------------------------------------------
+01.40.2017 10:03:SS
+Hostname: bellout-Z9PE-WSP
+Processor: Intel(R) Xeon(R) CPU E5-2630 0 @ 2.30GHz
+
 
