@@ -34,30 +34,14 @@
 // ============================================================
 QString get_elapsed_time(QDateTime t_start){
 
-    QString time_str;
+    QString time_str, t_ms, t_s, t_m, t_h, t_d;
     auto t_duration_ms = (double)time_since_milliseconds(t_start);
-    // std::vector<double> time_vector;
 
-    // time_vector.push_back(t_duration_ms); // milliseconds
-    // time_vector.push_back(t_duration_ms/1000); // seconds
-    // time_vector.push_back(t_duration_ms/1000/60); // minutes
-    // time_vector.push_back(t_duration_ms/1000/60/60); // hours
-    // time_vector.push_back(t_duration_ms/1000/60/60/24); // days
-
-    // time_str = "Elapsed time: \n"
-    //           + QString::number(t_duration_ms,'E',3) + " "
-    //           + QString::number(time_vector[1],'E',3) + " seconds\n"
-    //           + QString::number(time_vector[2],'E',3) + " minutes\n"
-    //           + QString::number(time_vector[3],'E',3) + " hours\n"
-    //           + QString::number(time_vector[4],'E',3) + " days\n";
-
-    QString t_ms, t_s, t_m, t_h, t_d;
-
-    t_ms = QString("%6.1f milliseconds\n").arg(t_duration_ms);
-    t_s  = QString("%6.1f seconds\n").arg(t_duration_ms/1000);
-    t_m  = QString("%6.1f minutes\n").arg(t_duration_ms/1000/60);
-    t_h  = QString("%6.1f hours\n").arg(t_duration_ms/1000/60);
-    t_d  = QString("%6.1f days\n").arg(t_duration_ms/1000/60/60/24);
+    t_ms = QString("%1 milliseconds\n").arg(t_duration_ms,12,'f',1);
+    t_s  = QString("%1 seconds\n").arg(t_duration_ms/1000,12,'f',1);
+    t_m  = QString("%1 minutes\n").arg(t_duration_ms/1000/60,12,'f',1);
+    t_h  = QString("%1 hours\n").arg(t_duration_ms/1000/60,12,'f',1);
+    t_d  = QString("%1 days\n").arg(t_duration_ms/1000/60/60/24,12,'f',1);
 
     time_str = "Elapsed time: \n" + t_ms + t_s + t_m  + t_h  + t_d;
 
@@ -66,7 +50,7 @@ QString get_elapsed_time(QDateTime t_start){
 
 // ============================================================
 QString getDateStr(QDateTime t_start){
-    auto log_str = t_start.toString("dd.mm.yyyy HH:MM:SS") + "\n";
+    auto log_str = t_start.toString("ddd dd.MM.yyyy hh:mm:ss") + "\n";
     return log_str;
 }
 
@@ -82,10 +66,10 @@ QString getFileSize(QString file_path){
 
     QString fs_B, fs_KiB, fs_MiB, fs_GiB;
 
-    fs_B   = QString("%6.0f bytes (B)\n").arg(file_sz);
-    fs_KiB = QString("%6.0f KiB \n").arg(file_sz/pow(1024,1)); // (1 kibiB = 1024 B)
-    fs_MiB = QString("%6.0f MiB \n").arg(file_sz/pow(1024,2)); // (1 mebiB = 1024^2 B)
-    fs_GiB = QString("%6.0f MiB \n").arg(file_sz/pow(1024,3)); // (1 gebiB = 1024^3 B)
+    fs_B   = QString("%1 bytes(B)\n").arg(file_sz,12,'f',0);
+    fs_KiB = QString("%1 KiB \n").arg(file_sz/pow(1024,1),12,'f',1); // (1 kibiB = 1024 B)
+    fs_MiB = QString("%1 MiB \n").arg(file_sz/pow(1024,2),12,'f',1); // (1 mebiB = 1024^2 B)
+    fs_GiB = QString("%1 GiB \n").arg(file_sz/pow(1024,3),12,'f',1); // (1 gebiB = 1024^3 B)
 
     QString size_str = "File Size:\n" + fs_B + fs_KiB + fs_MiB + fs_GiB;
 
@@ -135,14 +119,44 @@ QString getCpuInfo(){
 }
 
 // ============================================================
-void print_to_log(QString log_file,
-                  QDateTime t_start,
-                  QString file_path){
+QString getSetInfo(int r, int n, int N, int Z){
 
-    QString log_str;
+    QString r_str, n_str, N_str, Z_str;
+
+    r_str = QString("Selection, r = %1\n")
+        .arg((double)r,1,'f',0);
+    n_str = QString("Sampling grid (1D), n = %1\n")
+        .arg((double)n,1,'f',0);
+    N_str = QString("Sampling grid (2D), N = n^2 = %1\n")
+        .arg((double)N,1,'f',0);
+    Z_str = QString("# of combinations (reverse), Z = (N-1)*N/2 = %1\n")
+        .arg((double)Z,6,'E',3);
+
+    QString set_str = r_str + n_str + N_str + Z_str;
+    return set_str;
+}
+
+// ============================================================
+QString getLogName(){
+
+    auto host_str = getHostname();
+    QString log_file =
+        "../../combinations/runtimes-" + host_str[0] + ".log";
+    Utilities::FileHandling::CreateFile(log_file, true);
+
+    return log_file;
+}
+
+// ============================================================
+QDateTime printToLog(int r, int n, int N, int Z, QString &log_file){
+
+    // --------------------------------------------------------
+    // hostname
+    auto host_str = getHostname();
 
     // --------------------------------------------------------
     // date
+    auto t_start = QDateTime::currentDateTime();
     auto date_str = getDateStr(t_start);
 
     // --------------------------------------------------------
@@ -150,26 +164,27 @@ void print_to_log(QString log_file,
     auto cpu_str = getCpuInfo();
 
     // --------------------------------------------------------
-    // hostname
-    auto host_str = getHostname();
-
-    // --------------------------------------------------------
-    // file size
-    auto size_str = getFileSize(file_path);
+    // combination set info
+    auto set_str = getSetInfo(r, n, N, Z);
 
     // --------------------------------------------------------
     // print to log file
-    log_str = QString(50, '-') + "\n"
-        + date_str + host_str[1] + cpu_str + size_str;
+    QString log_str = QString(50, '-') + "\n"
+            + date_str + host_str[1] + cpu_str + set_str;
     Utilities::FileHandling::WriteLineToFile(log_str, log_file, false);
+
+    // --------------------------------------------------------
+    // return start time
+    return t_start;
 }
 
 // ============================================================
 QString getSetFilename(const int n, int Z){
 
     QString n_str, Z_str;
-    n_str.sprintf("n%03.0f",(double)n);
-    Z_str.sprintf("-Z%07.3E",(double)Z);
+
+    n_str = QString("n%1").arg((double)n,3,'f',0,'0');
+    Z_str = QString("-Z%1").arg((double)Z,4,'E',0,'0');
 
     QString file_path = "../../combinations/"
         + n_str + Z_str + "_cpp.cSet";

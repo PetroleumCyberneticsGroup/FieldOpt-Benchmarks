@@ -30,7 +30,7 @@
 #include <QDateTime>
 #include <QProcess>
 
-#include "../src/for_each_permutation.h"
+#include "../src/for_each_combination.h"
 #include "../src/utilities.hpp"
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 #include "../../../../FieldOpt/FieldOpt/Utilities/time.hpp"

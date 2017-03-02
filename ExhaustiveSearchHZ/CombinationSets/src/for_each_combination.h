@@ -1,31 +1,30 @@
-//  (C) Copyright Howard Hinnant 2005-2011.
+/*****************************************************************************
+ (C) Copyright Howard Hinnant 2005-2011.
 
-//  Use, modification and distribution are subject
-//  to the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy
-//  at http://www.boost.org/LICENSE_1_0.txt).
-//
-//  See http://www.boost.org/libs/type_traits for
-//  most recent version including documentation.
+Use, modification and distribution are subject to the Boost Software 
+License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy
+at http://www.boost.org/LICENSE_1_0.txt).
 
-// Details are in namespace detail.  Every effort
-// has been made to make combine_discontinuous and
-// permute as fast as possible.
+See http://www.boost.org/libs/type_traits for most recent version 
+including documentation.
 
-// They minimize the number of swaps that are performed.
-// Everything else builds on these two primitives. The most
-// complicated algorithm is for_each_reversible_permutation.
-// But it builds on combine_discontinuous and permute and I
-// believe represents a minimum number of swaps. Without
-// care, algorithms such as for_each_reversible_permutation
-// will take longer than for_each_permutation instead of
-// the intended half the time.
+Details are in namespace detail.  Every effort has been made 
+to make combine_discontinuous and permute as fast as possible.
 
-// Speed is everything.  Lest you could just use
-// std::next_permutation and manually eliminate
-// duplicate permutations.  If the implementation
-// fails in being orders of magnitude faster than
-// that, then it has failed miserably.
+They minimize the number of swaps that are performed. Everything else 
+builds on these two primitives. The most complicated algorithm is 
+for_each_reversible_permutation. But it builds on combine_discontinuous 
+and permute and I believe represents a minimum number of swaps. Without
+care, algorithms such as for_each_reversible_permutation will take 
+longer than for_each_permutation instead of the intended half the 
+time.
+
+Speed is everything.  Lest you could just use std::next_permutation 
+and manually eliminate duplicate permutations.  If the implementation
+fails in being orders of magnitude faster than that, then it has failed 
+miserably.
+
+*****************************************************************************/
 
 #ifndef CPP_T6_COMBINATORICS_FOR_EACH_FUNCTIONS_H
 #define CPP_T6_COMBINATORICS_FOR_EACH_FUNCTIONS_H
@@ -240,7 +239,7 @@ combine_discontinuous3_(
         for (D d22 = d2; i2 != last2; ++i2, --d22)
         {
             if (combine_discontinuous3_(
-                f1p, last1, d1-1, i2, last2, 
+                f1p, last1, d1-1, i2, last2,
                 d22, first3, last3, d3, f, d+1))
                 return true;
             swap(*first1, *i2);
@@ -262,7 +261,7 @@ combine_discontinuous3_(
     {
         if (d2 > 1)
             rotate_discontinuous3(
-                first1, last1, d1, std::next(first2), 
+                first1, last1, d1, std::next(first2),
                 last2, d2-1, first3, last3, d3);
         else
             rotate_discontinuous(
@@ -363,7 +362,7 @@ permute_(
 // ================
 // Calls f() for each permutation of [first1, last1)
 
-// Divided into permute and permute_ in a (perhaps futile) 
+// Divided into permute and permute_ in a (perhaps futile)
 // attempt to squeeze a little more performance out of it.
 template <class BidirIter, class Function>
 bool
@@ -433,8 +432,8 @@ permute(BidirIter first1, BidirIter last1,
 
 // BOUND_RANGE CLASS
 // =================
-// Creates a functor with no arguments which calls 
-// f_(first_, last_). Also has a variant that takes 
+// Creates a functor with no arguments which calls
+// f_(first_, last_). Also has a variant that takes
 // two It and ignores them.
 template <class Function, class It>
 class bound_range
@@ -553,11 +552,11 @@ count_each_combination(BidirIter first, BidirIter mid, BidirIter last)
 
 // FOR_EACH_PERMUTATION FUNCTION
 // =============================
-// For each of the permutation algorithms, use for_each_combination 
-// (or combine_discontinuous) to handle the "r out of N" part of the 
+// For each of the permutation algorithms, use for_each_combination
+// (or combine_discontinuous) to handle the "r out of N" part of the
 // algorithm.
-// Thus each permutation algorithm has to deal only with an 
-// "N out of N" problem.  I.e. For each combination of r out 
+// Thus each permutation algorithm has to deal only with an
+// "N out of N" problem.  I.e. For each combination of r out
 // of N items, permute it thusly.
 template <class BidirIter, class Function>
 Function
@@ -612,7 +611,7 @@ namespace detail
 // CIRCULAR_PERMUTATION CLASS
 // ==========================
 // Adapt functor to permute over [first+1, last)
-// A circular permutation of N items is done by 
+// A circular permutation of N items is done by
 // holding the first item and permuting [first+1, last).
 template <class Function, class BidirIter>
 class circular_permutation
