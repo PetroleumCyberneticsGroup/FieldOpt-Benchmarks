@@ -129,8 +129,9 @@ QString getSetInfo(int r, int n, int N, int Z){
         .arg((double)n,1,'f',0);
     N_str = QString("Sampling grid (2D), N = n^2 = %1\n")
         .arg((double)N,1,'f',0);
-    Z_str = QString("# of combinations (reverse), Z = (N-1)*N/2 = %1\n")
-        .arg((double)Z,6,'E',3);
+    Z_str = QString("# of combinations (reverse), "
+                        "Z = (N-1)*N/2 = %1 = %2\n")
+        .arg((double)Z,4,'f',0).arg((double)Z,6,'E',3);
 
     QString set_str = r_str + n_str + N_str + Z_str;
     return set_str;
@@ -141,7 +142,7 @@ QString getLogName(){
 
     auto host_str = getHostname();
     QString log_file =
-        "../../combinations/runtimes-" + host_str[0] + ".log";
+        "../../combinations/fSets/runtimes-" + host_str[0] + ".log";
     Utilities::FileHandling::CreateFile(log_file, true);
 
     return log_file;
@@ -186,8 +187,8 @@ QString getSetFilename(const int n, int Z){
     n_str = QString("n%1").arg((double)n,3,'f',0,'0');
     Z_str = QString("-Z%1").arg((double)Z,4,'E',0,'0');
 
-    QString file_path = "../../combinations/"
-        + n_str + Z_str + "_cpp.cSet";
+    QString file_path = "../../combinations/fSets/"
+        + n_str + Z_str + "_cpp.fSet";
 
     return file_path;
 }

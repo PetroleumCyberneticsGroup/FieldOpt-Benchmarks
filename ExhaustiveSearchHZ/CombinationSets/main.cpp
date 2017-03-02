@@ -28,8 +28,8 @@
 #include <QTextStream>
 #include <QDateTime>
 
+#include "src/permutation_string_writer.h"
 #include "src/f_at_each_combination.h"
-#include "src/f_at_each_combination_test.h"
 #include "src/for_each_combination.h"
 #include "src/utilities.hpp"
 
@@ -44,10 +44,15 @@ QString compute_combinations(int r, int n, int N, int Z,
     auto t_start = printToLog(r, n, N, Z, log_file);
 
     // ------------------------------------------------------------
-    // Prepare outpyt file and selection vector
-    auto output_file = getSetFilename(n,Z);
+    // Prepare selection vector
     std::vector<int> v(N);
     std::iota(v.begin(), v.end(), 0);
+
+    // ------------------------------------------------------------
+    // Prepare output file and and permutation writer
+    auto output_file = getSetFilename(n,Z);
+    PermutationStringWriter *writer =
+        new PermutationStringWriter(output_file);
 
     // ------------------------------------------------------------
     // Compute combinations: prints to disk after each combination
@@ -56,41 +61,29 @@ QString compute_combinations(int r, int n, int N, int Z,
             v.begin(),
             v.begin() + r,
             v.end(),
-            f_at_each_combination(v.size(),output_file));
+            f_at_each_combination(v.size(), writer));
 
     // ------------------------------------------------------------
-    // Print to log: elapsed time + file size
-    auto time_str = get_elapsed_time(t_start);
-    auto size_str = getFileSize(output_file);
-    Utilities::FileHandling::WriteLineToFile(size_str + time_str, log_file);
+    // Flush remaining data, if any
+    if (writer->temp_str_.size()>0)
+        writer->flushToDisk();
 
     // ------------------------------------------------------------
-    // Compute combinations:: Test piping to string that is flushed
-    // after a set number of combinations; should be faster than
-    // previous implementation
-    count =
-        for_each_reversible_permutation(
-            v.begin(),
-            v.begin() + r,
-            v.end(),
-            f_at_each_combination_test(v.size(),output_file));
-
-    // ------------------------------------------------------------
-    // Print to log: elapsed time + file size
-    time_str = get_elapsed_time(t_start);
-    size_str = getFileSize(output_file);
-    Utilities::FileHandling::WriteLineToFile(size_str + time_str, log_file);
+    // Print to log: file size + elapsed time
+    Utilities::FileHandling::WriteLineToFile(
+        getFileSize(output_file) + get_elapsed_time(t_start),
+        log_file);
 
     // ------------------------------------------------------------
     // Sanity check
-//    assert(count == count_each_reversible_permutation(v.begin(),
-//                                                      v.begin() + r,
-//                                                      v.end()));
+    assert(count == count_each_reversible_permutation(v.begin(),
+                                                      v.begin() + r,
+                                                      v.end()));
 
     // ------------------------------------------------------------
     // Summary
-//    std::cout << "Found " << count << " permutations of " << v.size()
-//              << " objects taken " << r << " at a time.\n\n";
+    std::cout << "Found " << count << " permutations of " << v.size()
+              << " objects taken " << r << " at a time.\n\n";
 
     return output_file;
 }
@@ -171,7 +164,7 @@ int main() {
     n = 80;         // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-//    compute_combinations(r, n, N, Z, log_file);
+    compute_combinations(r, n, N, Z, log_file);
 
     return 0;
 }

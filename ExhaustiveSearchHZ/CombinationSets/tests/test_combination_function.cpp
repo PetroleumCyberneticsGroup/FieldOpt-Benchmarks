@@ -30,8 +30,11 @@
 #include <QDateTime>
 #include <QProcess>
 
+#include "../src/permutation_string_writer.h"
+#include "../src/f_at_each_combination.h"
 #include "../src/for_each_combination.h"
 #include "../src/utilities.hpp"
+
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 #include "../../../../FieldOpt/FieldOpt/Utilities/time.hpp"
 
@@ -41,7 +44,9 @@ namespace {
 
 class combinationFunctionTest : public ::testing::Test {
  protected:
-  combinationFunctionTest() {};
+  combinationFunctionTest() {
+
+  };
 
   virtual ~combinationFunctionTest() {}
 
@@ -52,6 +57,41 @@ class combinationFunctionTest : public ::testing::Test {
 
 TEST_F(combinationFunctionTest, MATLABnchoosek_comparison) {
 
+
 }
+
+TEST_F(combinationFunctionTest,
+       Check_str_empty_after_flush_PermutationStringWriter) {
+
+    int r, n, N, Z;
+    r = 2;          // selection
+    n = 9;          // sampling grid, 1D
+    N = pow(n,2.0); // sampling grid, 2D
+    Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+
+    // Prepare selection vector
+    std::vector<int> v(N);
+    std::iota(v.begin(), v.end(), 0);
+
+    auto output_file = getSetFilename(n,Z) + "-test";
+    PermutationStringWriter *writer =
+        new PermutationStringWriter(output_file);
+
+    writer->addPermutation("");
+    writer->flushToDisk();
+
+    // Compute combinations: prints to disk after each combination
+//    std::uint64_t count =
+//        for_each_reversible_permutation(
+//            v.begin(),
+//            v.begin() + r,
+//            v.end(),
+//            f_at_each_combination(v.size(), writer));
+
+// check
+
+
+}
+
 
 }

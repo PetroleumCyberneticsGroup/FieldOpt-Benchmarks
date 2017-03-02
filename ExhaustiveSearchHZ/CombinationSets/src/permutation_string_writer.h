@@ -1,12 +1,4 @@
 /******************************************************************************
-
-   ?????
-
-   Original copyright from (C) Copyright Howard Hinnant 2005-2011.
-   Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0.
-
-   ?????
    Copyright (C) 2017 Mathias C. Bellout <mathias.bellout@ntnu.no>
 
    This file is part of the FieldOpt-Benchmarks project,
@@ -24,51 +16,47 @@
 
    You should have received a copy of the GNU General Public License
    along with FieldOpt-Benchmarks.  If not, see <http://www.gnu.org/licenses/>.
-
 ******************************************************************************/
 
-#ifndef COMBINATIONSETS_F_AT_EACH_COMBINATION_H
-#define COMBINATIONSETS_F_AT_EACH_COMBINATION_H
+#ifndef COMBINATIONSETS_PERMUTATION_STRING_WRITER_H
+#define COMBINATIONSETS_PERMUTATION_STRING_WRITER_H
 
+#include <iostream>
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 
 using namespace std;
 
-
-// ============================================================
-class f_at_each_combination
-{
-  unsigned len;
-  std::uint64_t count;
+class PermutationStringWriter {
 
  public:
-  PermutationStringWriter *writer_;
+  QString temp_str_;
 
-  explicit
-  f_at_each_combination(
-      unsigned l, PermutationStringWriter *writer) : len(l), count(0) {
-      writer_ = writer;
-  }
+ private:
+  QString file_path_;
+  int perms_in_str_;
+  int perms_pr_file_limit_ = 2e6;
+  int current_file_idx_;
 
-  operator std::uint64_t() const {return count;}
+ public:
+  PermutationStringWriter(QString file_path){
+      file_path_ = file_path;
+      Utilities::FileHandling::CreateFile(file_path_, true);
+  };
 
-  template <class It> bool operator()(It first, It last)
-  {
-      ++count;
-      QString perm_str;
-
-      if (first != last)
-      {
-          perm_str = QString::number(*first);
-          for (++first; first != last; ++first)
-          {
-              perm_str = perm_str + " " + QString::number(*first) + "\n";
-          }
+  void addPermutation(QString perm_str){
+      temp_str_ += perm_str;
+      ++perms_in_str_;
+      if(perms_in_str_ > perms_pr_file_limit_){
+          flushToDisk();
+          perms_in_str_ = 0;
       }
-      writer_->addPermutation(perm_str);
+  };
 
-      return false;
+  void flushToDisk(){
+      Utilities::FileHandling::WriteLineToFile(temp_str_, file_path_);
+      temp_str_ = ""; // reset temp str
+//      ++current_file_idx_; // ??
   }
 };
 
-#endif //COMBINATIONSETS_F_AT_EACH_COMBINATION_H
+#endif //COMBINATIONSETS_PERMUTATION_STRING_WRITER_H

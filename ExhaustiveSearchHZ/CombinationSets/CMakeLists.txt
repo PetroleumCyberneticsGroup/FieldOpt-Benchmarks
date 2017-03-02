@@ -27,7 +27,7 @@ set(SOURCE_FILES main.cpp
         src/for_each_combination.h
         src/utilities.hpp
         src/f_at_each_combination.h
-        src/f_at_each_combination_test.h)
+        src/permutation_string_writer.h)
 
 # Executable
 add_executable(CombinationSets ${SOURCE_FILES})
