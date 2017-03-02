@@ -37,7 +37,7 @@ using namespace std;
 
 // ============================================================
 QString compute_combinations(int r, int n, int N, int Z,
-                          QString &log_file, QStringList *str_TEST){
+                             QString &log_file){
 
     // ------------------------------------------------------------
     // Print to log: date, hostname, cpu info, combination set info
@@ -133,7 +133,7 @@ int main() {
     n = 2;          // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-//    compute_combinations(r, n, N, Z, log_file);
+    compute_combinations(r, n, N, Z, log_file);
 
     // --------------------------------------------------------
     // TEST SPACE: n003
@@ -142,7 +142,7 @@ int main() {
     n = 3;          // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-//    compute_combinations(r, n, N, Z, log_file);
+    compute_combinations(r, n, N, Z, log_file);
 
     // --------------------------------------------------------
     // TEST SPACE: n009
@@ -151,9 +151,9 @@ int main() {
     n = 9;          // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-//    compute_combinations(r, n, N, Z, log_file);
+    compute_combinations(r, n, N, Z, log_file);
 
-    auto file_path = compute_combinations(r, n, N, Z, log_file);
+//    auto file_path = compute_combinations(r, n, N, Z, log_file);
 
     // --------------------------------------------------------
     // SET {A}: n040
@@ -162,7 +162,7 @@ int main() {
     n = 40;         // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-//    compute_combinations(r, n, N, Z, log_file);
+    compute_combinations(r, n, N, Z, log_file);
 
     // --------------------------------------------------------
     // SET {B}: n080
