@@ -29,6 +29,7 @@
 #include <QDateTime>
 
 #include "src/f_at_each_combination.h"
+#include "src/f_at_each_combination_test.h"
 #include "src/for_each_combination.h"
 #include "src/utilities.hpp"
 
@@ -43,16 +44,19 @@ QString compute_combinations(int r, int n, int N, int Z,
     auto t_start = printToLog(r, n, N, Z, log_file);
 
     // ------------------------------------------------------------
-    // Compute combinations
+    // Prepare outpyt file and selection vector
     auto output_file = getSetFilename(n,Z);
     std::vector<int> v(N);
     std::iota(v.begin(), v.end(), 0);
+
+    // ------------------------------------------------------------
+    // Compute combinations: prints to disk after each combination
     std::uint64_t count =
         for_each_reversible_permutation(
             v.begin(),
             v.begin() + r,
             v.end(),
-            f_at_each_combination(v.size(),output_file, *str_TEST));
+            f_at_each_combination(v.size(),output_file));
 
     // ------------------------------------------------------------
     // Print to log: elapsed time + file size
@@ -61,15 +65,32 @@ QString compute_combinations(int r, int n, int N, int Z,
     Utilities::FileHandling::WriteLineToFile(size_str + time_str, log_file);
 
     // ------------------------------------------------------------
+    // Compute combinations:: Test piping to string that is flushed
+    // after a set number of combinations; should be faster than
+    // previous implementation
+    count =
+        for_each_reversible_permutation(
+            v.begin(),
+            v.begin() + r,
+            v.end(),
+            f_at_each_combination_test(v.size(),output_file));
+
+    // ------------------------------------------------------------
+    // Print to log: elapsed time + file size
+    time_str = get_elapsed_time(t_start);
+    size_str = getFileSize(output_file);
+    Utilities::FileHandling::WriteLineToFile(size_str + time_str, log_file);
+
+    // ------------------------------------------------------------
     // Sanity check
-    assert(count == count_each_reversible_permutation(v.begin(),
-                                                      v.begin() + r,
-                                                      v.end()));
+//    assert(count == count_each_reversible_permutation(v.begin(),
+//                                                      v.begin() + r,
+//                                                      v.end()));
 
     // ------------------------------------------------------------
     // Summary
-    std::cout << "Found " << count << " permutations of " << v.size()
-              << " objects taken " << r << " at a time.\n\n";
+//    std::cout << "Found " << count << " permutations of " << v.size()
+//              << " objects taken " << r << " at a time.\n\n";
 
     return output_file;
 }
@@ -132,14 +153,7 @@ int main() {
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
 //    compute_combinations(r, n, N, Z, log_file);
 
-    QStringList str_TEST;
-    QStringList *p_str_TEST = &str_TEST;
-
-    auto file_path = compute_combinations(r, n, N, Z, log_file, p_str_TEST);
-    for (int i = 0; i < str_TEST.size(); ++i)
-        std::cout << str_TEST[i].toStdString() << std::endl;
-
-    Utilities::FileHandling::WriteLineToFile(str_TEST.join("\n"), file_path);
+    auto file_path = compute_combinations(r, n, N, Z, log_file);
 
     // --------------------------------------------------------
     // SET {A}: n040

@@ -26,8 +26,8 @@ miserably.
 
 *****************************************************************************/
 
-#ifndef CPP_T6_COMBINATORICS_FOR_EACH_FUNCTIONS_H
-#define CPP_T6_COMBINATORICS_FOR_EACH_FUNCTIONS_H
+#ifndef FOR_EACH_COMBINATION_H
+#define FOR_EACH_COMBINATION_H
 
 #include <iterator>
 #include <algorithm>
@@ -651,6 +651,7 @@ for_each_circular_permutation(BidirIter first,
 }
 
 // COUNT_EACH_CIRCULAR_PERMUTATION
+// ===============================
 template <class UInt>
 UInt
 count_each_circular_permutation(UInt d1, UInt d2)
@@ -698,6 +699,8 @@ count_each_circular_permutation(UInt d1, UInt d2)
     return r;
 }
 
+// COUNT_EACH_CIRCULAR_PERMUTATION
+// ===============================
 template <class BidirIter>
 std::uintmax_t
 count_each_circular_permutation(BidirIter first, BidirIter mid, BidirIter last)
@@ -709,7 +712,9 @@ count_each_circular_permutation(BidirIter first, BidirIter mid, BidirIter last)
 namespace detail
 {
 
+// CLASS REVERSIBLE_PERMUTATION
 // Difficult!!!  See notes for operator().
+// =======================================
 template <class Function, class Size>
 class reversible_permutation
 {
@@ -724,7 +729,9 @@ class reversible_permutation
   operator()(BidirIter first, BidirIter last);
 };
 
+// CLASS REV1
 // rev1 looks like call_permute
+// =======================================
 template <class Function, class BidirIter>
 class rev1
 {
@@ -745,8 +752,10 @@ class rev1
   }
 };
 
+// CLASS REV2
 // For each permutation in [first1, last1),
-//     call f() for each permutation of [first2, last2).
+// call f() for each permutation of [first2, last2).
+// =================================================
 template <class Function, class BidirIter>
 class rev2
 {
@@ -773,9 +782,11 @@ class rev2
   }
 };
 
+// CLASS REV3
 // For each permutation in [first1, last1),
-//     and for each permutation of [first2, last2)
-//     call f() for each permutation of [first3, last3).
+// and for each permutation of [first2, last2)
+// call f() for each permutation of [first3, last3).
+// =====================================================
 template <class Function, class BidirIter>
 class rev3
 {
@@ -807,8 +818,11 @@ class rev3
   }
 };
 
-// There are simpler implementations.  I believe the simpler ones are far more
-//     expensive.
+
+// FUNCTION REVERSIBLE_PERMUTATION
+// There are simpler implementations.  I believe the simpler 
+// ones are far more expensive.
+// =========================================================
 template <class Function, class Size>
 template <class BidirIter>
 bool
@@ -903,6 +917,8 @@ reversible_permutation<Function, Size>::operator()(BidirIter first,
 
 }  // detail
 
+// TEMPLATE FOR_EACH_REVERSIBLE_PERMUTATION
+// ========================================
 template <class BidirIter, class Function>
 Function
 for_each_reversible_permutation(BidirIter first,
@@ -916,6 +932,8 @@ for_each_reversible_permutation(BidirIter first,
     return std::move(f);
 }
 
+// TEMPLATE COUNT_EACH_REVERSIBLE_PERMUTATION
+// ==========================================
 template <class UInt>
 UInt
 count_each_reversible_permutation(UInt d1, UInt d2)
@@ -948,6 +966,8 @@ count_each_reversible_permutation(UInt d1, UInt d2)
     return r;
 }
 
+// FUNCTION COUNT_EACH_REVERSIBLE_PERMUTATION
+// ==========================================
 template <class BidirIter>
 std::uintmax_t
 count_each_reversible_permutation(BidirIter first, BidirIter mid, BidirIter last)
@@ -959,9 +979,12 @@ count_each_reversible_permutation(BidirIter first, BidirIter mid, BidirIter last
 namespace detail
 {
 
+// CLASS REVERSE_CIRCULAR_PERMUTATION
 // Adapt functor to permute over [first+1, last)
-//   A reversible circular permutation of N items is done by holding the first
-//   item and reverse-permuting [first+1, last).
+// A reversible circular permutation of N items 
+// is done by holding the first item and 
+// reverse-permuting [first+1, last).
+// ==========================================
 template <class Function, class BidirIter>
 class reverse_circular_permutation
 {
@@ -988,6 +1011,8 @@ class reverse_circular_permutation
 
 }  // detail
 
+// FUNCTION FOR_EACH_REVERSIBLE_CIRCULAR_PERMUTATION
+// =================================================
 template <class BidirIter, class Function>
 Function
 for_each_reversible_circular_permutation(BidirIter first,
@@ -999,6 +1024,8 @@ for_each_reversible_circular_permutation(BidirIter first,
     return std::move(f);
 }
 
+// TEMPLATE COUNT_EACH_REVERSIBLE_CIRCULAR_PERMUTATION
+// ===================================================
 template <class UInt>
 UInt
 count_each_reversible_circular_permutation(UInt d1, UInt d2)
@@ -1025,6 +1052,8 @@ count_each_reversible_circular_permutation(UInt d1, UInt d2)
     return r;
 }
 
+// TEMPLATE COUNT_EACH_REVERSIBLE_CIRCULAR_PERMUTATION
+// ===================================================
 template <class BidirIter>
 std::uintmax_t
 count_each_reversible_circular_permutation(BidirIter first, BidirIter mid,
@@ -1034,4 +1063,4 @@ count_each_reversible_circular_permutation(BidirIter first, BidirIter mid,
         (std::distance(first, mid), std::distance(mid, last));
 }
 
-#endif //CPP_T6_COMBINATORICS_FOR_EACH_FUNCTIONS_H
+#endif //FOR_EACH_COMBINATION_H

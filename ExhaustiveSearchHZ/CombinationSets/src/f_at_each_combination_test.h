@@ -27,32 +27,33 @@
 
 ******************************************************************************/
 
-#ifndef COMBINATIONSETS_F_AT_EACH_COMBINATION_H
-#define COMBINATIONSETS_F_AT_EACH_COMBINATION_H
+#ifndef COMBINATIONSETS_F_AT_EACH_COMBINATION_TEST_H
+#define COMBINATIONSETS_F_AT_EACH_COMBINATION_TEST_H
 
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 
 using namespace std;
 
-
 // ============================================================
-class f_at_each_combination
+class f_at_each_combination_test
 {
   unsigned len;
   std::uint64_t count;
 
  private:
   QString file_path;
-
+//  QStringList str_TEST;
  public:
 
-  explicit
-  f_at_each_combination(
-      unsigned l, QString file_path_) : len(l), count(0) {
-
+  explicit f_at_each_combination_test(unsigned l,
+                                 QString file_path_) : len(l), count(0) {
       file_path = file_path_;
       Utilities::FileHandling::CreateFile(file_path, true);
   }
+
+//  explicit save_to_string(){
+//
+//  }
 
   operator std::uint64_t() const {return count;}
 
@@ -78,10 +79,13 @@ class f_at_each_combination
       // disc for each combination, in comparison to storing all
       // combinations into one large string, and only print to disc
       // at the end of this process
-      Utilities::FileHandling::WriteLineToFile(str, file_path);
+//      Utilities::FileHandling::WriteLineToFile(str, file_path);
 
+//      str_TEST_ << str;
+//      for (int i = 0; i < str_TEST.size(); ++i)
+//          std::cout << str_TEST[i].toStdString() << std::endl;
       return false;
   }
 };
 
-#endif //COMBINATIONSETS_F_AT_EACH_COMBINATION_H
+#endif //COMBINATIONSETS_F_AT_EACH_COMBINATION_TEST_H

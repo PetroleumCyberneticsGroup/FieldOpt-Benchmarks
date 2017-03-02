@@ -25,7 +25,9 @@ find_package(Boost COMPONENTS
 # Main executable ======================================================
 set(SOURCE_FILES main.cpp
         src/for_each_combination.h
-        src/utilities.hpp src/f_at_each_combination.h)
+        src/utilities.hpp
+        src/f_at_each_combination.h
+        src/f_at_each_combination_test.h)
 
 # Executable
 add_executable(CombinationSets ${SOURCE_FILES})
