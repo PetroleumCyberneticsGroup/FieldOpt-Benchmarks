@@ -1,16 +1,16 @@
 /******************************************************************************
 
-   ?????
-
-   Original copyright from (C) Copyright Howard Hinnant 2005-2011.
-   Use, modification and distribution are subject to the Boost Software
-   License, Version 1.0.
-
-   ?????
    Copyright (C) 2017 Mathias C. Bellout <mathias.bellout@ntnu.no>
 
    This file is part of the FieldOpt-Benchmarks project,
    an NTNU Petroleum Cybernetics Group project.
+
+   ?????
+   HOW DO WE DO THIS...
+   This class builds upon class f by Howard Hinnant 2005-2011.
+   Use, modification and distribution are subject to the Boost
+   Software License, Version 1.0.
+   ?????
 
    FieldOpt-Benchmarks is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

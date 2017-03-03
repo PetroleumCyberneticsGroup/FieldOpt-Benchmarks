@@ -34,8 +34,7 @@ class PermutationStringWriter {
  private:
   QString file_path_;
   int perms_in_str_;
-  int perms_pr_file_limit_ = 2e6;
-  int current_file_idx_;
+  int perms_pr_file_limit_ = 25e6;
 
  public:
   PermutationStringWriter(QString file_path){
@@ -53,9 +52,9 @@ class PermutationStringWriter {
   };
 
   void flushToDisk(){
-      Utilities::FileHandling::WriteLineToFile(temp_str_, file_path_);
+      Utilities::FileHandling::WriteLineToFile(temp_str_,
+                                               file_path_);
       temp_str_ = ""; // reset temp str
-//      ++current_file_idx_; // ??
   }
 };
 

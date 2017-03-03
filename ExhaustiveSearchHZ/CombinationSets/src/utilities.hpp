@@ -31,6 +31,41 @@
 #include "../../../../FieldOpt/FieldOpt/Utilities/time.hpp"
 #include "../../../../FieldOpt/FieldOpt/Utilities/filehandling.hpp"
 
+#include <iostream>
+#include <string>
+#include <sstream>
+
+// ============================================================
+int startPrompt(int choice){
+
+    std::string input_str = "", out_str;
+    int input_int = 0;
+
+    if (choice==1){
+        out_str = "Run the eight largest {n080, n100, n120,"
+            " n140, n160, n180, n190, n200} full sets? "
+            "[1: yes, 0: no]  ";
+    }else if (choice==2){
+        out_str = "Run comparison for the two "
+            "largest {n080, n100} test sets? "
+            "[1: yes, 0: no]  ";
+    }
+
+    while (true) {
+        std::cout << out_str;
+        std::getline(std::cin, input_str);
+
+        std::stringstream input_stream(input_str);
+        if (input_stream >> input_int) {
+            if (input_int==0 || input_int==1)
+                break;
+        }
+        std::cout << "Invalid number, please try again" << endl;
+    }
+
+    return input_int;
+}
+
 // ============================================================
 QString get_elapsed_time(QDateTime t_start){
 
@@ -56,7 +91,9 @@ QString getDateStr(QDateTime t_start){
 
 // ============================================================
 QString getFileSize(QString file_path){
-    auto file_sz = (double)Utilities::FileHandling::GetFileSize(file_path.toStdString());
+    auto file_sz =
+        (double)Utilities::FileHandling::
+        GetFileSize(file_path.toStdString());
 
     // Conversions
     // 1 kB = 1 kilo byte = 1000 B
@@ -66,10 +103,14 @@ QString getFileSize(QString file_path){
 
     QString fs_B, fs_KiB, fs_MiB, fs_GiB;
 
-    fs_B   = QString("%1 bytes(B)\n").arg(file_sz,12,'f',0);
-    fs_KiB = QString("%1 KiB \n").arg(file_sz/pow(1024,1),12,'f',1); // (1 kibiB = 1024 B)
-    fs_MiB = QString("%1 MiB \n").arg(file_sz/pow(1024,2),12,'f',1); // (1 mebiB = 1024^2 B)
-    fs_GiB = QString("%1 GiB \n").arg(file_sz/pow(1024,3),12,'f',1); // (1 gebiB = 1024^3 B)
+    fs_B   = QString("%1 bytes(B)\n")
+        .arg(file_sz,12,'f',0);
+    fs_KiB = QString("%1 KiB \n")
+        .arg(file_sz/pow(1024,1),12,'f',1); // (1 kibiB = 1024 B)
+    fs_MiB = QString("%1 MiB \n")
+        .arg(file_sz/pow(1024,2),12,'f',1); // (1 mebiB = 1024^2 B)
+    fs_GiB = QString("%1 GiB \n")
+        .arg(file_sz/pow(1024,3),12,'f',1); // (1 gebiB = 1024^3 B)
 
     QString size_str = "File Size:\n" + fs_B + fs_KiB + fs_MiB + fs_GiB;
 
@@ -81,18 +122,29 @@ QStringList getHostname(){
 
     QStringList host_strs;
     QProcess process;
+    QString stdout, stderr;
+
+    // get hostname from system
     process.start("bash", QStringList() << "-c" << "hostname");
-
     process.waitForFinished(10);
-
-    QString stdout = process.readAllStandardOutput();
-    QString stderr = process.readAllStandardError();
+    stdout = process.readAllStandardOutput();
+    // stderr = process.readAllStandardError();
 
     stdout.remove(QRegExp("\n"));
     QString host_str = "Hostname: " + stdout + "\n";
 
-    host_strs << stdout;
-    host_strs << host_str;
+    // save
+    host_strs << stdout;   // <hostname>
+    host_strs << host_str; // Hostname: <hostname>
+
+    // get user from system
+    process.start("bash", QStringList() << "-c" << "id -u -n");
+    process.waitForFinished(10);
+    stdout = process.readAllStandardOutput();
+
+    if (stdout.startsWith(" "))
+        stdout = stdout.mid(1);
+    host_strs << stdout;   // <user>
 
     return host_strs;
 }
@@ -111,8 +163,8 @@ QString getCpuInfo(){
     QString stdout = process.readAllStandardOutput();
     QString stderr = process.readAllStandardError();
 
-    if (stdout.startsWith(" "));
-    stdout = stdout.mid(1);
+    if (stdout.startsWith(" "))
+        stdout = stdout.mid(1);
 
     QString cpu_str = "Processor: " + stdout;
     return cpu_str;
@@ -131,7 +183,7 @@ QString getSetInfo(int r, int n, int N, int Z){
         .arg((double)N,1,'f',0);
     Z_str = QString("# of combinations (reverse), "
                         "Z = (N-1)*N/2 = %1 = %2\n")
-        .arg((double)Z,4,'f',0).arg((double)Z,6,'E',3);
+        .arg((double)Z,1,'f',0).arg((double)Z,6,'E',3);
 
     QString set_str = r_str + n_str + N_str + Z_str;
     return set_str;
@@ -142,7 +194,7 @@ QString getLogName(){
 
     auto host_str = getHostname();
     QString log_file =
-        "../../combinations/fSets/runtimes-" + host_str[0] + ".log";
+        "../../combinations/fSets-cpp/runtimes-" + host_str[0] + ".log";
     Utilities::FileHandling::CreateFile(log_file, true);
 
     return log_file;
@@ -182,13 +234,21 @@ QDateTime printToLog(int r, int n, int N, int Z, QString &log_file){
 // ============================================================
 QString getSetFilename(const int n, int Z){
 
-    QString n_str, Z_str;
+    QString n_str, Z_str, dir;
 
     n_str = QString("n%1").arg((double)n,3,'f',0,'0');
     Z_str = QString("-Z%1").arg((double)Z,4,'E',0,'0');
 
-    QString file_path = "../../combinations/fSets/"
-        + n_str + Z_str + "_cpp.fSet";
+    auto host_str = getHostname();
+    if ( host_str[0].contains("compute") ){
+        dir = "/work/" + host_str[2] + "/git/PCG/FieldOpt-Benchmarks"
+            "/ExhaustiveSearchHZ/CombinationSets/combinations/fSets-cpp/";
+    }else{
+        dir = "../../combinations/fSets-cpp/";
+    }
+
+    QString file_path = dir + n_str + Z_str + "_cpp.fSet";
+    Utilities::FileHandling::ParentDirectoryExists(dir, true);
 
     return file_path;
 }

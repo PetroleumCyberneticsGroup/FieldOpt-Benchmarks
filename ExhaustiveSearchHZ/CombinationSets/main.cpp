@@ -46,7 +46,7 @@ QString compute_combinations(int r, int n, int N, int Z,
     // ------------------------------------------------------------
     // Prepare selection vector
     std::vector<int> v(N);
-    std::iota(v.begin(), v.end(), 0);
+    std::iota(v.begin(), v.end(), 1); // Notice we're starting from 1
 
     // ------------------------------------------------------------
     // Prepare output file and and permutation writer
@@ -76,14 +76,14 @@ QString compute_combinations(int r, int n, int N, int Z,
 
     // ------------------------------------------------------------
     // Sanity check
-    assert(count == count_each_reversible_permutation(v.begin(),
-                                                      v.begin() + r,
-                                                      v.end()));
+    // assert(count == count_each_reversible_permutation(v.begin(),
+    //                                                   v.begin() + r,
+    //                                                   v.end()));
 
     // ------------------------------------------------------------
     // Summary
-    std::cout << "Found " << count << " permutations of " << v.size()
-              << " objects taken " << r << " at a time.\n\n";
+    // std::cout << "Found " << count << " permutations of " << v.size()
+    //           << " objects taken " << r << " at a time.\n\n";
 
     return output_file;
 }
@@ -146,8 +146,6 @@ int main() {
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
     compute_combinations(r, n, N, Z, log_file);
 
-//    auto file_path = compute_combinations(r, n, N, Z, log_file);
-
     // --------------------------------------------------------
     // SET {A}: n040
     // Select combination attributes
@@ -157,14 +155,81 @@ int main() {
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
     compute_combinations(r, n, N, Z, log_file);
 
-    // --------------------------------------------------------
-    // SET {B}: n080
-    // Select combination attributes
-    r = 2;          // selection
-    n = 80;         // sampling grid, 1D
-    N = pow(n,2.0); // sampling grid, 2D
-    Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-    compute_combinations(r, n, N, Z, log_file);
+    if( startPrompt(1)==1 ){
+
+        // --------------------------------------------------------
+        // SET {B}: n080
+        // Select combination attributes
+        r = 2;          // selection
+        n = 80;         // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {C}: n100
+        // Select combination attributes
+        r = 2;          // selection
+        n = 100;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {D}: n120
+        // Select combination attributes
+        r = 2;          // selection
+        n = 120;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {E}: n140
+        // Select combination attributes
+        r = 2;          // selection
+        n = 140;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {F}: n160
+        // Select combination attributes
+        r = 2;          // selection
+        n = 160;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {G}: n180
+        // Select combination attributes
+        r = 2;          // selection
+        n = 180;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {H}: n190
+        // Select combination attributes
+        r = 2;          // selection
+        n = 190;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+        // --------------------------------------------------------
+        // SET {I}: n200
+        // Select combination attributes
+        r = 2;          // selection
+        n = 200;        // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(r, n, N, Z, log_file);
+
+    }
 
     return 0;
 }

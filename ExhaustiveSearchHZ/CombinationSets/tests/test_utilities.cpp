@@ -81,4 +81,24 @@ TEST_F(utilitiesTest,getSetFilenameTest_Test) {
 
 }
 
+TEST_F(utilitiesTest,getHostname_Test) {
+    auto host_str = getHostname();
+
+    for (int i; i < host_str.size(); ++i){
+        if (host_str[i].startsWith(" "))
+            host_str[i] = host_str[i].mid(1);
+        host_str[i].remove(QRegExp("\n"));
+        cout << host_str[i].toStdString() << " ";
+    }
+    cout << endl;
+
+    // override hostname to test snippet
+    host_str[0] = "compute-1-0.local";
+    if ( host_str[0].contains("compute") )
+        cout << "host_str contains \"compute\"? => "
+             << host_str[0].contains("compute")
+             << endl;
+
+}
+
 }
