@@ -45,12 +45,12 @@ set_target_properties(CombinationSets
 include(CTest)
 enable_testing()
 
-if(BUILD_ON_MAUR_EXP)
-    include_directories(/home/bellout/include/gtest
-            tests)
-else()
+if(NOT BUILD_ON_MAUR_EXP)
     find_package(GTest REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS}
+            tests)
+else()
+    include_directories(/home/bellout/include/gtest
             tests)
 endif()
 
@@ -81,19 +81,20 @@ set_target_properties(test_utilities
 add_executable(test_combination_function
         tests/test_combination_function.cpp)
 
-if(BUILD_ON_MAUR_EXP)
+if(NOT BUILD_ON_MAUR_EXP)
+    target_link_libraries(test_combination_function
+            Qt5::Core
+            ${GTEST_BOTH_LIBRARIES}
+            ${CMAKE_THREAD_LIBS_INIT}
+            ${Boost_LIBRARIES})
+else()
     target_link_libraries(test_combination_function
             Qt5::Core
             /home/bellout/lib/libgtest_main.a
             /home/bellout/lib/libgtest.a
             ${CMAKE_THREAD_LIBS_INIT}
             ${Boost_LIBRARIES})
-else()
-    target_link_libraries(test_combination_function
-            Qt5::Core
-            ${GTEST_BOTH_LIBRARIES}
-            ${CMAKE_THREAD_LIBS_INIT}
-            ${Boost_LIBRARIES})
+
 endif()
 set_target_properties(test_combination_function
         PROPERTIES COMPILE_FLAGS "-fPIC")
