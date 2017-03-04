@@ -46,8 +46,7 @@ include(CTest)
 enable_testing()
 
 if(BUILD_ON_MAUR_EXP)
-    include_directories(
-            /home/bellout/git/libraries/googletest/googletest/src
+    include_directories(/home/bellout/include/gtest
             tests)
 else()
     find_package(GTest REQUIRED)
