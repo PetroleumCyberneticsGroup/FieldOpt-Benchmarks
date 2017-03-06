@@ -1,5 +1,5 @@
 [MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:18:02
+Mon 06.03.2017 00:11:33
 Hostname: bellout-Z9PE-D8-WS
 Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
 Selection, r = 2
@@ -12,14 +12,14 @@ File size:
        0.0 MiB 
        0.0 GiB 
 Elapsed time:
-      61.1 milliseconds
-       0.1 seconds
+      21.5 milliseconds
+       0.0 seconds
        0.0 minutes
        0.0 hours
        0.0 days
 byte/combination ratio: 4.000 
 [MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:18:02
+Mon 06.03.2017 00:11:33
 Hostname: bellout-Z9PE-D8-WS
 Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
 Selection, r = 2
@@ -32,14 +32,14 @@ File size:
        0.0 MiB 
        0.0 GiB 
 Elapsed time:
-      18.3 milliseconds
+       9.9 milliseconds
        0.0 seconds
        0.0 minutes
        0.0 hours
        0.0 days
 byte/combination ratio: 4.000 
 [MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:18:02
+Mon 06.03.2017 00:11:33
 Hostname: bellout-Z9PE-D8-WS
 Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
 Selection, r = 2
@@ -52,69 +52,69 @@ File size:
        0.0 MiB 
        0.0 GiB 
 Elapsed time:
-      20.6 milliseconds
+      17.5 milliseconds
        0.0 seconds
        0.0 minutes
        0.0 hours
        0.0 days
 byte/combination ratio: 5.778 
 [MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:18:06
+Mon 06.03.2017 00:11:57
 Hostname: bellout-Z9PE-D8-WS
 Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
 Selection, r = 2
-Sampling grid (1D), n = 40
-Sampling grid (2D), N = n^2 = 1600
-# of combinations (reverse), Z = (N-1)*N/2 = 1279200 = 1.279E+06
+Sampling grid (1D), n = 57
+Sampling grid (2D), N = n^2 = 3249
+# of combinations (reverse), Z = (N-1)*N/2 = 5276376 = 5.276E+06
 File size:
-  11021907 bytes(B)
-   10763.6 KiB 
-      10.5 MiB 
+  49168224 bytes(B)
+   48015.8 KiB 
+      46.9 MiB 
        0.0 GiB 
 Elapsed time:
-    4174.4 milliseconds
-       4.2 seconds
-       0.1 minutes
+   23742.3 milliseconds
+      23.7 seconds
+       0.4 minutes
        0.0 hours
        0.0 days
-byte/combination ratio: 8.616 
+byte/combination ratio: 9.319 
 [MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:21:19
+Mon 06.03.2017 00:13:49
 Hostname: bellout-Z9PE-D8-WS
 Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
 Selection, r = 2
-Sampling grid (1D), n = 80
-Sampling grid (2D), N = n^2 = 6400
-# of combinations (reverse), Z = (N-1)*N/2 = 20476800 = 2.048E+07
+Sampling grid (1D), n = 73
+Sampling grid (2D), N = n^2 = 5329
+# of combinations (reverse), Z = (N-1)*N/2 = 14196456 = 1.420E+07
 File size:
- 197684307 bytes(B)
-  193051.1 KiB 
-     188.5 MiB 
-       0.2 GiB 
+ 136066464 bytes(B)
+  132877.4 KiB 
+     129.8 MiB 
+       0.1 GiB 
 Elapsed time:
-  193114.5 milliseconds
-     193.1 seconds
-       3.2 minutes
+  111791.4 milliseconds
+     111.8 seconds
+       1.9 minutes
+       0.0 hours
+       0.0 days
+byte/combination ratio: 9.585 
+[MATLAB]----------------------------------------------------
+Mon 06.03.2017 00:19:49
+Hostname: bellout-Z9PE-D8-WS
+Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
+Selection, r = 2
+Sampling grid (1D), n = 89
+Sampling grid (2D), N = n^2 = 7921
+# of combinations (reverse), Z = (N-1)*N/2 = 31367160 = 3.137E+07
+File size:
+ 304904160 bytes(B)
+  297758.0 KiB 
+     290.8 MiB 
+       0.3 GiB 
+Elapsed time:
+  359529.4 milliseconds
+     359.5 seconds
+       6.0 minutes
        0.1 hours
        0.0 days
-byte/combination ratio: 9.654 
-[MATLAB]----------------------------------------------------
-Thu 02.03.2017 22:33:08
-Hostname: bellout-Z9PE-D8-WS
-Processor:  Intel(R) Xeon(R) CPU E5-2620 0 @ 2.00GHz
-Selection, r = 2
-Sampling grid (1D), n = 100
-Sampling grid (2D), N = n^2 = 10000
-# of combinations (reverse), Z = (N-1)*N/2 = 49995000 = 5.000E+07
-File size:
- 488891106 bytes(B)
-  477432.7 KiB 
-     466.2 MiB 
-       0.5 GiB 
-Elapsed time:
-  709116.7 milliseconds
-     709.1 seconds
-      11.8 minutes
-       0.2 hours
-       0.0 days
-byte/combination ratio: 9.779 
+byte/combination ratio: 9.720 

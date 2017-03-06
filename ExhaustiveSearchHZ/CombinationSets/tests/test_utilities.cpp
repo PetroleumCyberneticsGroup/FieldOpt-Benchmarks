@@ -64,19 +64,19 @@ TEST_F(utilitiesTest,getSetFilenameTest_Test) {
     n = 9;
     N = pow(n,2.0);
     Z = (N-1)*N/2;
-    file_path = getSetFilename(n,Z);
+    file_path = getfSetFilename(n, Z);
     cout << Z << ": " << file_path.toStdString() << endl;
 
     n = 25;
     N = pow(n,2.0);
     Z = (N-1)*N/2;
-    file_path = getSetFilename(n,Z);
+    file_path = getfSetFilename(n, Z);
     cout << Z << ": " << file_path.toStdString() << endl;
 
     n = 200;
     N = pow(n,2.0);
     Z = (N-1)*N/2;
-    file_path = getSetFilename(n,Z);
+    file_path = getfSetFilename(n, Z);
     cout << Z << ": " << file_path.toStdString() << endl;
 
 }

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(CombinationSets  LANGUAGES CXX)
+project(CombinationSets LANGUAGES CXX)
 
 # Build dirs ===========================================================
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -47,13 +47,12 @@ enable_testing()
 
 if(NOT BUILD_ON_MAUR_EXP)
     find_package(GTest REQUIRED)
-    include_directories(${GTEST_INCLUDE_DIRS}
-            tests)
+    include_directories(${GTEST_INCLUDE_DIRS})
 else()
-    include_directories(/home/bellout/include/gtest
-            tests)
+    include_directories(/home/bellout/include/gtest)
 endif()
 
+include_directories(tests)
 
 # Testing: utilities ===================================================
 add_executable(test_utilities

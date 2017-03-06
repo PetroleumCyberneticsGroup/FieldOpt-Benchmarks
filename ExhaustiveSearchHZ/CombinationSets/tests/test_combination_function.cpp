@@ -159,28 +159,28 @@ TEST_F(combinationFunctionTest, MATLABnchoosek_comparison) {
     QString n002_mat = "n002_mat.fSet";
     QString n003_mat = "n003_mat.fSet";
     QString n009_mat = "n009_mat.fSet";
-    QString n040_mat = "n040_mat.fSet";
-    QString n080_mat = "storage/n080_mat.fSet";
-    QString n100_mat = "storage/n100_mat.fSet";
+    QString n057_mat = "n057_mat.fSet";
+    QString n073_mat = "storage/n073_mat.fSet";
+    QString n089_mat = "storage/n089_mat.fSet";
 
     // cpp fSet data sets
     QString cdir = "../../combinations/fSets-cpp/";
     QString n002_cpp = "n002-Z6E+00_cpp.fSet";
     QString n003_cpp = "n003-Z4E+01_cpp.fSet";
     QString n009_cpp = "n009-Z3E+03_cpp.fSet";
-    QString n040_cpp = "n040-Z1E+06_cpp.fSet";
-    QString n080_cpp = "storage/n080-Z2E+07_cpp.fSet";
-    QString n100_cpp = "storage/n100-Z5E+07_cpp.fSet";
+    QString n057_cpp = "n057-Z1E+06_cpp.fSet";
+    QString n073_cpp = "storage/n073-Z2E+07_cpp.fSet";
+    QString n089_cpp = "storage/n089-Z5E+07_cpp.fSet";
 
     // --------------------------------------------------------
     EXPECT_TRUE(comparedfSetData(n002_mat, n002_cpp, mdir, cdir));
     EXPECT_TRUE(comparedfSetData(n003_mat, n003_cpp, mdir, cdir));
     EXPECT_TRUE(comparedfSetData(n009_mat, n009_cpp, mdir, cdir));
-    EXPECT_TRUE(comparedfSetData(n040_mat, n040_cpp, mdir, cdir));
+    EXPECT_TRUE(comparedfSetData(n057_mat, n057_cpp, mdir, cdir));
 
     if( startPrompt(2)==1 ) {
-        EXPECT_TRUE(comparedfSetData(n080_mat, n080_cpp, mdir, cdir));
-        EXPECT_TRUE(comparedfSetData(n100_mat, n100_cpp, mdir, cdir));
+        EXPECT_TRUE(comparedfSetData(n073_mat, n073_cpp, mdir, cdir));
+        EXPECT_TRUE(comparedfSetData(n089_mat, n089_cpp, mdir, cdir));
     }
 }
 
@@ -193,7 +193,7 @@ TEST_F(combinationFunctionTest,
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
 
-    auto output_file = getSetFilename(n,Z) + "-test";
+    auto output_file = getfSetFilename(n, Z) + "-test";
     PermutationStringWriter *writer =
         new PermutationStringWriter(output_file);
 

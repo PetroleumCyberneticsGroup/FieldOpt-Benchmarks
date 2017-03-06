@@ -75,7 +75,7 @@ QString get_elapsed_time(QDateTime t_start){
     t_ms = QString("%1 milliseconds\n").arg(t_duration_ms,12,'f',1);
     t_s  = QString("%1 seconds\n").arg(t_duration_ms/1000,12,'f',1);
     t_m  = QString("%1 minutes\n").arg(t_duration_ms/1000/60,12,'f',1);
-    t_h  = QString("%1 hours\n").arg(t_duration_ms/1000/60,12,'f',1);
+    t_h  = QString("%1 hours\n").arg(t_duration_ms/1000/60/60,12,'f',1);
     t_d  = QString("%1 days\n").arg(t_duration_ms/1000/60/60/24,12,'f',1);
 
     time_str = "Elapsed time: \n" + t_ms + t_s + t_m  + t_h  + t_d;
@@ -232,9 +232,9 @@ QDateTime printToLog(int r, int n, int N, int Z, QString &log_file){
 }
 
 // ============================================================
-QString getSetFilename(const int n, int Z){
+QString getfSetFilename(const int n, int Z){
 
-    QString n_str, Z_str, dir;
+    QString file_path, n_str, Z_str, dir;
 
     n_str = QString("n%1").arg((double)n,3,'f',0,'0');
     Z_str = QString("-Z%1").arg((double)Z,4,'E',0,'0');
@@ -247,7 +247,27 @@ QString getSetFilename(const int n, int Z){
         dir = "../../combinations/fSets-cpp/";
     }
 
-    QString file_path = dir + n_str + Z_str + "_cpp.fSet";
+    file_path = dir + n_str + Z_str + "_cpp.fSet";
+    Utilities::FileHandling::ParentDirectoryExists(dir, true);
+
+    return file_path;
+}
+
+// ============================================================
+QString getcSetFilename(QString fSuperSetB_path, QString fSubSetA_path){
+
+    QString file_path, dir;
+
+    auto host_str = getHostname();
+    if ( host_str[0].contains("compute") ){
+        dir = "/work/" + host_str[2] + "/git/PCG/FieldOpt-Benchmarks"
+            "/ExhaustiveSearchHZ/ComplementSets/complements/cSets-cpp/";
+    }else{
+        dir = "../../complements/cSets-cpp/";
+    }
+
+    file_path = dir + "B_" + fSuperSetB_path.split("_")[0]
+        + "--A_" + fSubSetA_path.split("_")[0] + "_cpp.cSet";
     Utilities::FileHandling::ParentDirectoryExists(dir, true);
 
     return file_path;
