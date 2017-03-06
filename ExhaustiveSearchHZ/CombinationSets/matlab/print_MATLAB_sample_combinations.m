@@ -58,6 +58,10 @@ n003 = uint16(1:3^2);   % 9             | 36
 n009 = uint16(1:9^2);   % 81            | 3240
 
 
+
+
+
+
 % FULLSETS: 57|73|89
 n=57;  n057 = uint16(1:n^2 + 72);
 n=73;  n073 = uint16(1:n^2 + 64);
@@ -141,9 +145,10 @@ n=201; n201 = uint16(1:n^2 + 0);
 % sum of cSets:    816
 % ===========================================================
 
-
 run_test_space = true;
-run_sub_spaces = true;
+run_sub_spaces = false;
+
+fprintf('%s\n',repmat('=',1,52));
 
 if run_test_space
 
@@ -152,39 +157,39 @@ if run_test_space
 
 	% ---------------------------------------------------
 	% n002 = uint16(1:2^2);   % 4             | 6
-	t000 = tic;
-	fnnn = 'n002';
+	% t000 = tic;
+	% fnnn = 'n002';
 
-	C002 = nchoosek(n002,k); % get combinations
-	fn = [dirn fnnn '_mat' '.fSet'];
-	fid = fopen(fn,'w'); % print combinations
-	fprintf(fid,'%d %d\n',C002');
-	fclose(fid);
-	printC(C002,toc(t000),fn,host,cpu,flog,2,2^2,k);
+	% C002 = nchoosek(n002,k); % get combinations
+	% fn = [dirn fnnn '_mat' '.fSet'];
+	% fid = fopen(fn,'w'); % print combinations
+	% fprintf(fid,'%d %d\n',C002');
+	% fclose(fid);
+	% printC(C002,toc(t000),fn,host,cpu,flog,2,2^2,k);
 
-	% ---------------------------------------------------
-	% n003 = uint16(1:3^2);   % 9             | 36
-	t000 = tic;
-	fnnn = 'n003';
+	% % ---------------------------------------------------
+	% % n003 = uint16(1:3^2);   % 9             | 36
+	% t000 = tic;
+	% fnnn = 'n003';
 
-	C003 = nchoosek(n003,k); % get combinations
-	fn = [dirn fnnn '_mat' '.fSet'];
-	fid = fopen(fn,'w'); % print combinations
-	fprintf(fid,'%d %d\n',C003');
-	fclose(fid);
-	printC(C003,toc(t000),fn,host,cpu,flog,3,3^2,k);
+	% C003 = nchoosek(n003,k); % get combinations
+	% fn = [dirn fnnn '_mat' '.fSet'];
+	% fid = fopen(fn,'w'); % print combinations
+	% fprintf(fid,'%d %d\n',C003');
+	% fclose(fid);
+	% printC(C003,toc(t000),fn,host,cpu,flog,3,3^2,k);
 
-	% ---------------------------------------------------
-	% n009 = uint16(1:9^2);   % 81            | 3240
-	t000 = tic;
-	fnnn = 'n009';
+	% % ---------------------------------------------------
+	% % n009 = uint16(1:9^2);   % 81            | 3240
+	% t000 = tic;
+	% fnnn = 'n009';
 
-	C009 = nchoosek(n009,k); % get combinations
-	fn = [dirn fnnn '_mat' '.fSet'];
-	fid = fopen(fn,'w'); % print combinations
-	fprintf(fid,'%d %d\n',C009');
-	fclose(fid);
-	printC(C009,toc(t000),fn,host,cpu,flog,9,9^2,k);
+	% C009 = nchoosek(n009,k); % get combinations
+	% fn = [dirn fnnn '_mat' '.fSet'];
+	% fid = fopen(fn,'w'); % print combinations
+	% fprintf(fid,'%d %d\n',C009');
+	% fclose(fid);
+	% printC(C009,toc(t000),fn,host,cpu,flog,9,9^2,k);
 
 end
 

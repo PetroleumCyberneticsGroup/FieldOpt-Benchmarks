@@ -33,20 +33,75 @@
 #include "src/for_each_combination.h"
 #include "src/utilities.hpp"
 
+#include <Eigen/Dense>
+
 using namespace std;
+using namespace Eigen;
 
 // ============================================================
-QString compute_combinations(int s, int r, int n, int N, int Z,
-                             QString &log_file){
+QString compute_combinations(int p, int r, int n, int N, int Z,
+                             QString &log_file) {
 
     // ------------------------------------------------------------
     // Print to log: date, hostname, cpu info, combination set info
     auto t_start = printToLog(r, n, N, Z, log_file);
+    vector<int> v_temp(n), v(N);
 
     // ------------------------------------------------------------
     // Prepare selection vector
-    std::vector<int> v(N);
-    std::iota(v.begin(), v.end(), s); // Notice we're starting from s
+    if (p > 1) {
+
+        Array<int,Dynamic,Dynamic>  T;
+//        T(0,0) = (p+1) + (p+1) * (n+2*p);
+//        T(0,1) = T(0,0) + (n-1); // debug
+
+        int a = (p+1) + (p+1) * (n+2*p);
+        int b = a + (n-1); // debug
+        T << a, b;
+
+//        iota(v_temp.begin(), v_temp.end(), T(0,0));
+//        v.insert(v.end(), v_temp.begin(), v_temp.end());
+//        v_temp.clear();
+
+//        for (int i=1; i < n; ++i){
+//            T(i,0) = T(i-1,1) + (2*p+1);
+//            T(i,1) = T(i,0) + (n-1);
+//
+//            iota(v_temp.begin(), v_temp.end(), T(i,0));
+//            v.insert(v.end(), v_temp.begin(), v_temp.end());
+//            v_temp.clear();
+//
+//            for (int i=0; i < v.size(); ++i){
+//                cout << v[i];
+//            }
+//            cout << endl;
+//        }
+
+        // ------ MATLAB CODE ------
+        // % make first subgrid / region row
+        // a(1) = p + 1 + (p + 1) * (n + 2 * p);
+        // % remember: n + 2 * p = main_n = n201
+        // b(1) = a(1) + (n - 1);
+
+        // % fill in:
+        // T(1,:) = [ a(1) b(1) ];
+        // s(1) = {T(1, 1) : T(1, 2)};
+
+        // % iterate for each region row, global indexing top to bottom
+        // for ii = 2 : n
+        //     a(ii) = b(ii - 1) + 2 * p + 1;
+        //     b(ii) = a(ii) + (n - 1);
+
+        //     % fill in:
+        //     T(ii,:) = [a(ii) b(ii)];
+        //     s(ii) = {T(ii, 1) : T(ii, 2)};
+        // end
+
+    }else{
+        iota(v.begin(), v.end(), p); // Notice we're starting from p
+    }
+
+
 
     // ------------------------------------------------------------
     // Prepare output file and and permutation writer
@@ -167,6 +222,7 @@ int main() {
 
     int s, r, n, N, Z;
 
+
     // --------------------------------------------------------
     // TEST SPACE: n002
     // Select combination attributes:
@@ -180,46 +236,47 @@ int main() {
     // --------------------------------------------------------
     // TEST SPACE: n003
     // Select combination attributes
-    s = 1;          // start
+    s = 2;          // start
     r = 2;          // selection
     n = 3;          // sampling grid, 1D
     N = pow(n,2.0); // sampling grid, 2D
     Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
     compute_combinations(s, r, n, N, Z, log_file);
 
-    // --------------------------------------------------------
-    // TEST SPACE: n009
-    // Select combination attributes
-    s = 1;          // start
-    r = 2;          // selection
-    n = 9;          // sampling grid, 1D
-    N = pow(n,2.0); // sampling grid, 2D
-    Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-    compute_combinations(s, r, n, N, Z, log_file);
+    if(false){
+//    if( startPrompt(1)==1 ){
 
-    // --------------------------------------------------------
-    // SET {A}: n057
-    // n_points:  57  np_before: 72  np_after: 72
-    // Select combination attributes
-    s = 73;         // start
-    r = 2;          // selection
-    n = 57;         // sampling grid, 1D
-    N = pow(n,2.0); // sampling grid, 2D
-    Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-    compute_combinations(s, r, n, N, Z, log_file);
+        // --------------------------------------------------------
+        // TEST SPACE: n009
+        // Select combination attributes
+        s = 1;          // start
+        r = 2;          // selection
+        n = 9;          // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(s, r, n, N, Z, log_file);
 
-    // --------------------------------------------------------
-    // SET {B}: n073
-    // n_points:  73  np_before: 64  np_after: 64
-    // Select combination attributes
-    s = 65;          // start
-    r = 2;          // selection
-    n = 73;         // sampling grid, 1D
-    N = pow(n,2.0); // sampling grid, 2D
-    Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
-    compute_combinations(s, r, n, N, Z, log_file);
+        // --------------------------------------------------------
+        // SET {A}: n057
+        // n_points:  57  np_before: 72  np_after: 72
+        // Select combination attributes
+        s = 73;         // start
+        r = 2;          // selection
+        n = 57;         // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(s, r, n, N, Z, log_file);
 
-    if( startPrompt(1)==1 ){
+        // --------------------------------------------------------
+        // SET {B}: n073
+        // n_points:  73  np_before: 64  np_after: 64
+        // Select combination attributes
+        s = 65;         // start
+        r = 2;          // selection
+        n = 73;         // sampling grid, 1D
+        N = pow(n,2.0); // sampling grid, 2D
+        Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
+        compute_combinations(s, r, n, N, Z, log_file);
 
         // --------------------------------------------------------
         // SET {C}: n089
@@ -231,6 +288,8 @@ int main() {
         N = pow(n,2.0); // sampling grid, 2D
         Z = (N-1)*N/2;  // # of possible combinations (w/reverse)
         compute_combinations(s, r, n, N, Z, log_file);
+
+
 
         // --------------------------------------------------------
         // SET {D}: n105
