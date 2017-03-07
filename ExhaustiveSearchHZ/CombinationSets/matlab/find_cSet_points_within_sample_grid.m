@@ -7,7 +7,8 @@
 
 fprintf('%s\n',repmat('=',1,52));
 
-n=57; p=72;
+% n=57; p=72;
+n=9; p=96;
 
 % make first subgrid/region row
 a(1) = p+1 + (p+1)*(n+2*p); % remember: n+2*p = main_n = n201

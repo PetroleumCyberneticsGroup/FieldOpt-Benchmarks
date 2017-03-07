@@ -20,7 +20,8 @@ Szt = P(1).*Zt + P(2);
 plot(Zt,Szt,'b-','linewidth',2);
 
 
-np = [2 3 9   57 73 89 105 121 137 153 169 185 201];
+% np = [2 3 9     57 73 89 105 121 137 153 169 185 201];
+np = [2 3  9 17 41  57 73 89 105 121 137 153 169 185 201];
 Np = np.^2; 
 Zp = (Np-1).*Np/2;
 Szp = P(1).*Zp + P(2);
@@ -46,19 +47,23 @@ frmt = ['%3.0f | %5.0f | %9.0f '...
 
 fprintf(head)
 fprintf([ repmat('-',1,r) '\n'])
-fprintf(frmt, M(1:3,:)')
+fprintf(frmt, M(1:2,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(4:6,:)')
+fprintf(frmt, M(3:5,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(7:9,:)')
+fprintf(frmt, M(6:8,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(10:end,:)')
+fprintf(frmt, M(9:11,:)')
+
+fprintf([ repmat('-',1,r) '\n'])
+
+fprintf(frmt, M(12:end,:)')
 
 fprintf([ repmat('=',1,r) '\n\n'])
 
@@ -84,7 +89,9 @@ fprintf([ repmat('=',1,r) '\n\n'])
 % 201 | 40401 | 816100200 | 7977576090  | 7790602 | 7608.0 |   7.4 | 
 % ==================================================================
 
-np = [2 3 9   57 73 89 105 121 137 153 169 185 201];
+% np = [2 3 9      57 73 89 105 121 137 153 169 185 201];
+np = [2 3  9 17 41  57 73 89 105 121 137 153 169 185 201];
+
 Np = np.^2; 
 fSet = (Np-1).*Np/2;
 
@@ -109,19 +116,23 @@ frmt = ['%3.0f | %5.0f | %9.0f '...
 
 fprintf(head)
 fprintf([ repmat('-',1,r) '\n'])
-fprintf(frmt, M(1:3,:)')
+fprintf(frmt, M(1:2,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(4:6,:)')
+fprintf(frmt, M(3:5,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(7:9,:)')
+fprintf(frmt, M(6:8,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 
-fprintf(frmt, M(10:end,:)')
+fprintf(frmt, M(9:11,:)')
+
+fprintf([ repmat('-',1,r) '\n'])
+
+fprintf(frmt, M(11:end,:)')
 
 fprintf([ repmat('-',1,r) '\n'])
 fprintf('sum of cSets: %6.0f\n', sum(cSet)/1e6);

@@ -58,10 +58,6 @@ n003 = uint16(1:3^2);   % 9             | 36
 n009 = uint16(1:9^2);   % 81            | 3240
 
 
-
-
-
-
 % FULLSETS: 57|73|89
 n=57;  n057 = uint16(1:n^2 + 72);
 n=73;  n073 = uint16(1:n^2 + 64);
@@ -78,27 +74,35 @@ n=169; n169 = uint16(1:n^2 + 16);
 n=185; n185 = uint16(1:n^2 + 8);
 n=201; n201 = uint16(1:n^2 + 0);
 
-% n_points: 201  np_before:  0  np_after:  0
-% n_points: 185  np_before:  8  np_after:  8
-% n_points: 169  np_before: 16  np_after: 16
-% n_points: 153  np_before: 24  np_after: 24
-% n_points: 137  np_before: 32  np_after: 32
-% n_points: 121  np_before: 40  np_after: 40
-% n_points: 105  np_before: 48  np_after: 48
-% n_points:  89  np_before: 56  np_after: 56
-% n_points:  73  np_before: 64  np_after: 64
-% n_points:  57  np_before: 72  np_after: 72
+% n_points_in_reg: 201  n_points_before:  0  n_points_after:  0 
+% n_points_in_reg: 185  n_points_before:  8  n_points_after:  8
+% n_points_in_reg: 169  n_points_before: 16  n_points_after: 16
+% n_points_in_reg: 153  n_points_before: 24  n_points_after: 24
+% n_points_in_reg: 137  n_points_before: 32  n_points_after: 32
+% n_points_in_reg: 121  n_points_before: 40  n_points_after: 40
+% n_points_in_reg: 105  n_points_before: 48  n_points_after: 48
+% n_points_in_reg:  89  n_points_before: 56  n_points_after: 56
+% n_points_in_reg:  73  n_points_before: 64  n_points_after: 64
+% n_points_in_reg:  57  n_points_before: 72  n_points_after: 72
+% n_points_in_reg:  41  n_points_before: 80  n_points_after: 80
+% n_points_in_reg:  17  n_points_before: 92  n_points_after: 92
+% n_points_in_reg:   9  n_points_before: 96  n_points_after: 96
 
-% n_cells: 50   cell_lims:  6 - 55
-% n_cells: 46   cell_lims:  8 - 53
-% n_cells: 42   cell_lims: 10 - 51
-% n_cells: 38   cell_lims: 12 - 49
-% n_cells: 34   cell_lims: 14 - 47
-% n_cells: 30   cell_lims: 16 - 45
-% n_cells: 26   cell_lims: 18 - 43
-% n_cells: 22   cell_lims: 20 - 41
-% n_cells: 18   cell_lims: 22 - 39
-% n_cells: 14   cell_lims: 24 - 37
+
+% ncells_in_reg:  50  ncells_before:   0  ncells_after:   0  
+% ncells_in_reg:  46  ncells_before:   2  ncells_after:   2 
+% ncells_in_reg:  42  ncells_before:   4  ncells_after:   4 
+% ncells_in_reg:  38  ncells_before:   6  ncells_after:   6 
+% ncells_in_reg:  34  ncells_before:   8  ncells_after:   8 
+% ncells_in_reg:  30  ncells_before:  10  ncells_after:  10 
+% ncells_in_reg:  26  ncells_before:  12  ncells_after:  12 
+% ncells_in_reg:  22  ncells_before:  14  ncells_after:  14 
+% ncells_in_reg:  18  ncells_before:  16  ncells_after:  16 
+% ncells_in_reg:  14  ncells_before:  18  ncells_after:  18 
+% ncells_in_reg:  10  ncells_before:  20  ncells_after:  20 
+% ncells_in_reg:   4  ncells_before:  23  ncells_after:  23 
+% ncells_in_reg:   2  ncells_before:  24  ncells_after:  24 
+
 
 % ==================================================================
 %  n  | N=n^2 |     Z     |     sz(B)   | sz(KiB) | sz(MiB)|sz(GiB)|

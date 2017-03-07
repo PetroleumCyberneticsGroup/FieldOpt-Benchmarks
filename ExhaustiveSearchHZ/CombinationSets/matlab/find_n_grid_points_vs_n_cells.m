@@ -10,19 +10,22 @@ fprintf('n_points_in_50_cell_grid_region: %4.0f\n', n_points_in_50_cell_grid_reg
 lb = 6;
 ub = 55;
 % c = [ 0 2.^(0:8) ]
-c = 2 .* (0:10)
+c = [ 2 .* (0:10) 23 24 ]
 
 ncells = [
-lb+c(1) ub-c(1)
-lb+c(2) ub-c(2)
-lb+c(3) ub-c(3)
-lb+c(4) ub-c(4)
-lb+c(5) ub-c(5)
-lb+c(6) ub-c(6)
-lb+c(7) ub-c(7)
-lb+c(8) ub-c(8)
-lb+c(9) ub-c(9)
-lb+c(10) ub-c(10)
+lb+c(1) ub-c(1)    % c=0   ->   ncells_in_region:  50
+lb+c(2) ub-c(2)    % c=2   ->   ncells_in_region:  46
+lb+c(3) ub-c(3)    % c=4   ->   ncells_in_region:  42
+lb+c(4) ub-c(4)    % c=6   ->   ncells_in_region:  38
+lb+c(5) ub-c(5)    % c=8   ->   ncells_in_region:  34
+lb+c(6) ub-c(6)    % c=10  ->   ncells_in_region:  30
+lb+c(7) ub-c(7)    % c=12  ->   ncells_in_region:  26
+lb+c(8) ub-c(8)    % c=14  ->   ncells_in_region:  22
+lb+c(9) ub-c(9)    % c=16  ->   ncells_in_region:  18
+lb+c(10) ub-c(10)  % c=18  ->   ncells_in_region:  14
+lb+c(11) ub-c(11)  % c=20  ->   ncells_in_region:  10
+lb+c(12) ub-c(12)  % c=23  ->   ncells_in_region:   4
+lb+c(13) ub-c(13)  % c=24  ->   ncells_in_region:   2
 ]
 
 regions = {};
@@ -40,7 +43,7 @@ for ii = 1 : size(ncells,1)
 
 	n_points_in_x_cell_grid_region(ii) = ...
 	size(0:four_points_per_grid:ncells_in_region(ii),2);
-	
+
 	n_points_after_in_x_cell_grid_region(ii) = ...
 	size(0.25:four_points_per_grid:ncells_after_region(ii),2);
 
@@ -107,7 +110,7 @@ end
 
 colormap(jet(size(ncells,1)))
 colorbar
-axis([1 60 1 60 0 1]) 
+axis([1 60 1 60 0 1])
 
 cmap = colormap
 
