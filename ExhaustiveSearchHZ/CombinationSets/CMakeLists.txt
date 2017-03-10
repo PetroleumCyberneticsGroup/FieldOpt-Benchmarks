@@ -31,7 +31,9 @@ set(SOURCE_FILES main.cpp
         src/for_each_combination.h
         src/utilities.hpp
         src/f_at_each_combination.h
-        src/permutation_string_writer.h)
+        src/permutation_string_writer.h
+        src/sample_point_ranges.h
+        src/sample_point_ranges.cpp)
 
 # Executable
 add_executable(CombinationSets ${SOURCE_FILES})

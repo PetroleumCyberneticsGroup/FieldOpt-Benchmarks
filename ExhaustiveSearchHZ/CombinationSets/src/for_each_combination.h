@@ -927,8 +927,8 @@ for_each_reversible_permutation(BidirIter first,
 {
     typedef typename std::iterator_traits<BidirIter>::difference_type D;
     for_each_combination(first, mid, last,
-                         detail::reversible_permutation<Function&, D>(f,
-                                                                      std::distance(first, mid)));
+                         detail::reversible_permutation<Function&, D>
+                             (f, std::distance(first, mid)));
     return std::move(f);
 }
 
