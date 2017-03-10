@@ -55,24 +55,26 @@ k = uint16(2);
 % TEST SPACES
 n002 = uint16(1:2^2);   % 4             | 6
 n003 = uint16(1:3^2);   % 9             | 36
-n009 = uint16(1:9^2);   % 81            | 3240
-
+% TESTSETS: 9:17:41     % 81:289:1681   | 3240:41616:1412040
+n= 9; p=96+1; n009 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=17; p=92+1; n017 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=41; p=80+1; n041 = uint16(find_point_range_within_overall_sample_grid(n,p));
 
 % FULLSETS: 57|73|89
-n=57;  n057 = uint16(1:n^2 + 72);
-n=73;  n073 = uint16(1:n^2 + 64);
-n=89;  n089 = uint16(1:n^2 + 56);
+n=57; p=72+1; n057 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=73; p=64+1; n073 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=89; p=56+1; n089 = uint16(find_point_range_within_overall_sample_grid(n,p));
 
 % FULLSETS: 105|121|137
-n=105; n105 = uint16(1:n^2 + 48);
-n=121; n121 = uint16(1:n^2 + 40);
-n=137; n137 = uint16(1:n^2 + 32);
+n=105; p=48+1; n105 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=121; p=40+1; n121 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=137; p=32+1; n137 = uint16(find_point_range_within_overall_sample_grid(n,p));
 
 % FULLSETS: 153|169|185|201
-n=153; n153 = uint16(1:n^2 + 24);
-n=169; n169 = uint16(1:n^2 + 16);
-n=185; n185 = uint16(1:n^2 + 8);
-n=201; n201 = uint16(1:n^2 + 0);
+n=153; p=24+1; n153 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=169; p=16+1; n169 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=185; p=8+1;  n185 = uint16(find_point_range_within_overall_sample_grid(n,p));
+n=201; p=0+1;  n201 = uint16(find_point_range_within_overall_sample_grid(n,p));
 
 % n_points_in_reg: 201  n_points_before:  0  n_points_after:  0 
 % n_points_in_reg: 185  n_points_before:  8  n_points_after:  8
@@ -109,7 +111,10 @@ n=201; n201 = uint16(1:n^2 + 0);
 % ------------------------------------------------------------------
 %   2 |     4 |         6 |          0  |       0 |    0.0 |   0.0 |
 %   3 |     9 |        36 |          0  |       0 |    0.0 |   0.0 |
+% ------------------------------------------------------------------
 %   9 |    81 |      3240 |          0  |       0 |    0.0 |   0.0 |
+%  17 |   289 |     41616 |          0  |       0 |    0.0 |   0.0 |
+%  41 |  1681 |   1412040 |   13161528  |   12853 |   12.6 |   0.0 |
 % ------------------------------------------------------------------
 %  57 |  3249 |   5276376 |   50939387  |   49745 |   48.6 |   0.0 |
 %  73 |  5329 |  14196456 |  138142342  |  134905 |  131.7 |   0.1 |
@@ -125,15 +130,17 @@ n=201; n201 = uint16(1:n^2 + 0);
 % 201 | 40401 | 816100200 | 7977576090  | 7790602 | 7608.0 |   7.4 |
 % ==================================================================
 
-
 % ===========================================================
 %  n  | N=n^2 |     Z     |    Z[1e6]  |  cSet  | cSet[1e6] |
 % -----------------------------------------------------------
 %   2 |     4 |         6 |      0  |         6 |         0 |
 %   3 |     9 |        36 |      0  |        30 |         0 |
-%   9 |    81 |      3240 |      0  |      3204 |         0 |
 % -----------------------------------------------------------
-%  57 |  3249 |   5276376 |      5  |   5273136 |         5 |
+%   9 |    81 |      3240 |      0  |      3204 |         0 |
+%  17 |   289 |     41616 |      0  |     38376 |         0 |
+%  41 |  1681 |   1412040 |      1  |   1370424 |         1 |
+% -----------------------------------------------------------
+%  57 |  3249 |   5276376 |      5  |   3864336 |         4 |
 %  73 |  5329 |  14196456 |     14  |   8920080 |         9 |
 %  89 |  7921 |  31367160 |     31  |  17170704 |        17 |
 % -----------------------------------------------------------
@@ -141,6 +148,7 @@ n=201; n201 = uint16(1:n^2 + 0);
 % 121 | 14641 | 107172120 |    107  |  46402320 |        46 |
 % 137 | 18769 | 176128296 |    176  |  68956176 |        69 |
 % -----------------------------------------------------------
+% 137 | 18769 | 176128296 |    176  |  68956176 |        69 |
 % 153 | 23409 | 273978936 |    274  |  97850640 |        98 |
 % 169 | 28561 | 407851080 |    408  | 133872144 |       134 |
 % 185 | 34225 | 585658200 |    586  | 177807120 |       178 |
@@ -161,39 +169,39 @@ if run_test_space
 
 	% ---------------------------------------------------
 	% n002 = uint16(1:2^2);   % 4             | 6
-	% t000 = tic;
-	% fnnn = 'n002';
+	t000 = tic;
+	fnnn = 'n002';
 
-	% C002 = nchoosek(n002,k); % get combinations
-	% fn = [dirn fnnn '_mat' '.fSet'];
-	% fid = fopen(fn,'w'); % print combinations
-	% fprintf(fid,'%d %d\n',C002');
-	% fclose(fid);
-	% printC(C002,toc(t000),fn,host,cpu,flog,2,2^2,k);
+	C002 = nchoosek(n002,k); % get combinations
+	fn = [dirn fnnn '_mat' '.fSet'];
+	fid = fopen(fn,'w'); % print combinations
+	fprintf(fid,'%d %d\n',C002');
+	fclose(fid);
+	printC(C002,toc(t000),fn,host,cpu,flog,2,2^2,k);
 
-	% % ---------------------------------------------------
-	% % n003 = uint16(1:3^2);   % 9             | 36
-	% t000 = tic;
-	% fnnn = 'n003';
+	% ---------------------------------------------------
+	% n003 = uint16(1:3^2);   % 9             | 36
+	t000 = tic;
+	fnnn = 'n003';
 
-	% C003 = nchoosek(n003,k); % get combinations
-	% fn = [dirn fnnn '_mat' '.fSet'];
-	% fid = fopen(fn,'w'); % print combinations
-	% fprintf(fid,'%d %d\n',C003');
-	% fclose(fid);
-	% printC(C003,toc(t000),fn,host,cpu,flog,3,3^2,k);
+	C003 = nchoosek(n003,k); % get combinations
+	fn = [dirn fnnn '_mat' '.fSet'];
+	fid = fopen(fn,'w'); % print combinations
+	fprintf(fid,'%d %d\n',C003');
+	fclose(fid);
+	printC(C003,toc(t000),fn,host,cpu,flog,3,3^2,k);
 
-	% % ---------------------------------------------------
-	% % n009 = uint16(1:9^2);   % 81            | 3240
-	% t000 = tic;
-	% fnnn = 'n009';
+	% ---------------------------------------------------
+	% n009 = uint16(1:9^2);   % 81            | 3240
+	t000 = tic;
+	fnnn = 'n009';
 
-	% C009 = nchoosek(n009,k); % get combinations
-	% fn = [dirn fnnn '_mat' '.fSet'];
-	% fid = fopen(fn,'w'); % print combinations
-	% fprintf(fid,'%d %d\n',C009');
-	% fclose(fid);
-	% printC(C009,toc(t000),fn,host,cpu,flog,9,9^2,k);
+	C009 = nchoosek(n009,k); % get combinations
+	fn = [dirn fnnn '_mat' '.fSet'];
+	fid = fopen(fn,'w'); % print combinations
+	fprintf(fid,'%d %d\n',C009');
+	fclose(fid);
+	printC(C009,toc(t000),fn,host,cpu,flog,9,9^2,k);
 
 end
 
@@ -252,10 +260,47 @@ fprintf('%s\n',repmat('=',1,52));
 fclose(flog);
 
 
+% ===================================================
+% See find_cSet_points_within_sample_grid.m for original algorithm
+function v = find_point_range_within_overall_sample_grid(n,p)
 
+
+% make first subgrid/region row
+a(1) = p+1 + (p+1)*(n+2*p); % remember: n+2*p = main_n = n201
+b(1) = a(1) + (n-1);
+
+% fill in first row:
+T(1,:) = [ a(1) b(1) ];
+s(1) = { T(1,1) : T(1,2) };
+
+% iterate for each region row, global indexing top to bottom
+for ii = 2 : n
+
+	a(ii) = b(ii-1)+2*p+1; 
+	b(ii) = a(ii) + (n-1);
+
+	% fill in:
+	T(ii,:) = [a(ii) b(ii)];
+	s(ii) = { T(ii,1) : T(ii,2) };
+
+end
+
+% assemble all point indices
+v = horzcat(s{:});
+
+end
 
 % ===================================================
-%
+% convert point indices into grid coordinates
+function coord = global_idx_to_coord(v,main_n)
+
+	coord(:,2) = floor(v./main_n); % y
+	coord(:,1) = v' - coord(:,2).*main_n; % x
+
+end
+
+% ===================================================
+% print to screen
 function [] = printC(C,t,fn,host,cpu,flog,n,N,k);
 
 	% time string, hostname, processor type
