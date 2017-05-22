@@ -16,6 +16,7 @@ namespace Grid {
 class Cell
 {
 public:
+    Cell(){};
     Cell(int global_index, IJKCoordinate ijk_index,
          double volume, double poro, double permx, double permy, double permz,
          XYZCoordinate center, QList<XYZCoordinate> corners);

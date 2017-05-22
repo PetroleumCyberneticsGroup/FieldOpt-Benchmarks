@@ -29,7 +29,7 @@ bool DirectoryExists(QString directory_path);
  */
 QString GetCurrentPath();
 
-int RunRMS(QString current_path, bool run_rms);
+int RunRMS(QString model, QString current_path, bool run_rms);
 
 bool CopyToFromWorkflowFolder(QString inputf, QString outputf);
 

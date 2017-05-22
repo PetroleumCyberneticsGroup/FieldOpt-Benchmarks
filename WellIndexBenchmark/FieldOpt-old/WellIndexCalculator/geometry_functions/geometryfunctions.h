@@ -79,6 +79,8 @@ public:
      */
     static QPair<QList<int>, QList<QVector3D> > cells_intersected(QVector3D start_point, QVector3D end_point, Model::Reservoir::Grid::Grid *grid);
 
+    static QVector3D findEndpoint(QVector3D start_pt, QVector3D end_point, Model::Reservoir::Grid::Grid *grid);
+
     /*!
      * \brief Generates a double array with the numbers of 3 corners from each of the 6 faces of a cell that
      * will be used to create a normal vector for each face.

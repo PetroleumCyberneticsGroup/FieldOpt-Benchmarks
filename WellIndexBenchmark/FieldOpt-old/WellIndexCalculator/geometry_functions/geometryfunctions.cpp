@@ -153,11 +153,45 @@ QPair<QList<int>, QList<QVector3D > > GeometryFunctions::cells_intersected(QVect
     QList<int> cell_global_index;
     QList<QVector3D> entry_points;
 
+
+
+
+    std::cout << "GeometryFunctions::cells_intersected ... " << std::endl;
+
     /* Find first and last cell blocks intersected and their indeces.
      * Add first cell and first point to lists.
      */
-    Model::Reservoir::Grid::Cell last_cell = GeometryFunctions::get_cell_enveloping_point(grid,end_point);
-    Model::Reservoir::Grid::Cell first_cell = GeometryFunctions::get_cell_enveloping_point(grid,start_point);
+    // Model::Reservoir::Grid::Cell last_cell = GeometryFunctions::get_cell_enveloping_point(grid,end_point);
+    Model::Reservoir::Grid::Cell last_cell;
+    QVector3D test_point = GeometryFunctions::findEndpoint(start_point, end_point, grid);
+
+    std::cout << "Cell is outside grid ("
+                             + std::to_string(test_point.x()) + ", "
+                             + std::to_string(test_point.y()) + ", "
+                             + std::to_string(test_point.z()) + ")" << std::endl;
+
+    try {
+        std::cout << "Finding last cell... ";
+        last_cell = GeometryFunctions::get_cell_enveloping_point(grid,end_point);
+    }
+    catch (const std::runtime_error &e) {
+        std::cout << "... cannot find last cell: " << e.what() << std::endl;
+        // continue;
+    }
+
+    // Model::Reservoir::Grid::Cell first_cell = GeometryFunctions::get_cell_enveloping_point(grid,start_point);
+    Model::Reservoir::Grid::Cell first_cell;
+    try {
+        std::cout << "Finding first cell... ";        
+        first_cell = GeometryFunctions::get_cell_enveloping_point(grid,start_point);
+    }
+    catch (const std::runtime_error &e) {
+        std::cout << "Cannot find first cell: " << e.what() << std::endl;
+        // continue;
+    }
+
+
+
 
     int last_cell_index  = last_cell.global_index();
     int first_cell_index = first_cell.global_index();
@@ -229,6 +263,61 @@ QPair<QList<int>, QList<QVector3D > > GeometryFunctions::cells_intersected(QVect
     return pair;
 
 }
+
+
+
+QVector3D GeometryFunctions::findEndpoint(QVector3D start_pt,
+                                     QVector3D end_point, 
+                                     Model::Reservoir::Grid::Grid *grid) {
+    // First, traverse the segment until we're inside a cell.
+    double step = 0.0;
+    QVector3D org_start_pt = start_pt;
+    Model::Reservoir::Grid::Cell cell;    
+    // Set step size to half of the smallest dimension of the smallest grid block
+    // double epsilon = smallest_grid_cell_dimension_ / (2.0 * (start_pt-end_point).norm());
+    double epsilon = 10;
+    while (step <= 1.0) {
+        try
+        {
+            cell = GeometryFunctions::get_cell_enveloping_point(grid, start_pt);
+            // if (!cell.is_active())
+            //     throw runtime_error("The cell is inactive.");
+            break;
+        }
+        catch (const std::runtime_error &e)
+        {
+            step += epsilon;
+            start_pt = org_start_pt * (1 - step) + end_point * step;
+        }
+    }
+    // if (step > 1.0)
+    //     return false; // Return if we failed to step into the reservoir
+    // else if (step == 0.0) {
+    //     return true; // Return if we didn't have to move
+    // }
+
+    // Then, traverse back with a smaller step size until we're outside again.
+    epsilon = epsilon / 10.0;
+    while (true) {
+        try
+        {
+            step -= epsilon;
+            start_pt = org_start_pt * (1 - step) + end_point * step;
+            cell = GeometryFunctions::get_cell_enveloping_point(grid, start_pt);
+            // if (!cell.is_active())
+            //     throw runtime_error("The cell is inactive.");
+        }
+        catch (const std::runtime_error &e)
+        {
+            break;
+        }
+    }
+    return start_pt;
+}
+
+
+
+
 
 QList<QList<QVector3D>> GeometryFunctions::cell_planes_coords(QList<Model::Reservoir::Grid::XYZCoordinate> corners)
 {
@@ -666,10 +755,12 @@ bool GeometryFunctions::is_point_inside_cell(Model::Reservoir::Grid::Cell cell, 
     return point_inside;
 }
 
+
 Model::Reservoir::Grid::Cell GeometryFunctions::get_cell_enveloping_point(Model::Reservoir::Grid::Grid *grid, QVector3D point)
 {
     // Get total number of cells
     int total_cells = grid->Dimensions().nx*grid->Dimensions().ny*grid->Dimensions().nz;
+    std::cout << "Total number of cells is:" << total_cells << std::endl;
 
     for(int ii=0; ii<total_cells; ii++){
         if( GeometryFunctions::is_point_inside_cell(grid->GetCell(ii),point) ){
@@ -742,7 +833,7 @@ void GeometryFunctions::print_well_index_file(Model::Reservoir::Grid::Grid *grid
     myfile <<"-- \n";
     myfile <<"-- Exported from ECL_5SPOT\n";
     myfile <<"-- \n";
-    myfile <<"-- Exported by user hilmarm from WellIndexCalculator \n";
+    myfile <<"-- Exported by PCGs old WellIndexCalculator (Orig.HM) \n";
     myfile <<"-- \n";
     myfile <<"-- ==================================================================================================\n";
     myfile <<"\n";

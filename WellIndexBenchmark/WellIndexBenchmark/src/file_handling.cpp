@@ -57,14 +57,14 @@ WellDataPCG GetDirListSingle(QString directory_path,
     QStringList well_file_names;
 
     qDebug() << "==> checking if directories in current "
-                "path constain well data files...: \n";
+        "path constain well data files...: \n";
 
     QDir temp_dir = directory_path + "/" + dir_name;
 
     if (!temp_dir.exists())
     {
         qDebug() << "directory does not exist! ..."
-                    "exiting";
+            "exiting";
         exit(-1);
     }
 
@@ -73,16 +73,16 @@ WellDataPCG GetDirListSingle(QString directory_path,
                << dir_name;  }
     // Search given directory
     QStringList dir_list =
-            temp_dir.entryList(QStringList() << "tw*xyz",
-                              QDir::AllEntries |
-                              QDir::Files |
-                              QDir::CaseSensitive |
-                              QDir::NoDotAndDotDot);
+        temp_dir.entryList(QStringList() << "*w*xyz",
+                           QDir::AllEntries |
+                               QDir::Files |
+                               QDir::CaseSensitive |
+                               QDir::NoDotAndDotDot);
 
     if (dir_list.isEmpty() || dir_list.size() > 1){
         qDebug() << "==> directory" << temp_dir.dirName()
                  << "has no well file or has"
-                    " multiple well files!";
+                     " multiple well files!";
     }
     else if(dir_list.size()==1){
         if (debug_level==2)
@@ -118,14 +118,14 @@ WellDataPCG GetDirList(QString directory_path, int debug_level)
 
     QDirIterator it(dir.absolutePath(),
                     QDir::Dirs |
-                    QDir::NoDotAndDotDot);
+                        QDir::NoDotAndDotDot);
 
     QStringList well_dirs_paths;
     QStringList well_dirs_names;
     QStringList well_file_names;
 
     qDebug() << "==> checking if directories in current "
-                "path constain well data files...: \n";
+        "path constain well data files...: \n";
 
     while (it.hasNext()) {
 
@@ -138,16 +138,16 @@ WellDataPCG GetDirList(QString directory_path, int debug_level)
                    << dir_name;  }
         // Search given directory
         QStringList dir_list =
-                temp_dir.entryList(QStringList() << "tw*xyz",
-                                  QDir::AllEntries |
-                                  QDir::Files |
-                                  QDir::CaseSensitive |
-                                  QDir::NoDotAndDotDot);
+            temp_dir.entryList(QStringList() << "*w*xyz",
+                               QDir::AllEntries |
+                                   QDir::Files |
+                                   QDir::CaseSensitive |
+                                   QDir::NoDotAndDotDot);
 
         if (dir_list.isEmpty() || dir_list.size() > 1){
             qDebug() << "==> directory" << temp_dir.dirName()
                      << "has no well file or has"
-                        " multiple well files!";
+                         " multiple well files!";
         }
         else if(dir_list.size()==1){
             if (debug_level==2)
@@ -171,15 +171,29 @@ WellDataPCG GetDirList(QString directory_path, int debug_level)
 }
 
 
-int RunRMS(QString current_path, bool run_rms)
+int RunRMS(QString model, QString current_path, bool run_rms)
 {
-    /* bash /opt/roxar/rms/rms_2013.0.3_el5 -project \
-     * rms_wi_benchmark.pro -batch EXPORT_TW01_MD -readonly
-    */
-    QString rms_command =
+    QString rms_command = "none";
+
+    if (QString::compare(model,"norne") == 0){
+        rms_command =
             "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
-            + current_path + "/../rms/rms_wi_benchmark.pro"
-            + " -batch WI_CALC_BENCHMARK_PYCMD -readonly";
+                + current_path + "/../rms/rms_wi_benchmark_norne.pro"
+                + " -batch WI_CALC_BENCHMARK_PYCMD -readonly";
+    }
+    else if (QString::compare(model,"5spot") == 0){
+        /* bash /opt/roxar/rms/rms_2013.0.3_el5 -project \
+         * rms_wi_benchmark.pro -batch EXPORT_TW01_MD -readonly
+        */
+        rms_command =
+            "bash /opt/roxar/rms/rms_2013.0.3_el5 -project "
+                + current_path + "/../rms/rms_wi_benchmark_5spot.pro"
+                + " -batch WI_CALC_BENCHMARK_PYCMD -readonly";
+    }
+    else {
+        qDebug() << "No RMS project found for directory (model="
+                 << model << "):\n" << current_path;
+    }
 
     int ecode;
     if(run_rms)
@@ -212,7 +226,6 @@ bool CopyToFromWorkflowFolder(QString inputf, QString outputf)
 
 bool CopyCurrentWell(QString directory_path, QString well_name)
 {
-
     QString source_file = directory_path + "/" + well_name;
     QString target_file = directory_path + "/TW01";
     qDebug() << "source_file " << source_file;
