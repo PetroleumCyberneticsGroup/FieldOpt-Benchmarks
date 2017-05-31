@@ -1,0 +1,54 @@
+--------------------------------------------------
+Fri 10.03.2017 11:36:04
+Hostname: 
+Processor: Selection, r = 2
+Sampling grid (1D), n = 2
+Sampling grid (2D), N = n^2 = 4
+# of combinations (reverse), Z = (N-1)*N/2 = 6 = 6.000E+00
+File Size:
+           0 bytes(B)
+         0.0 KiB 
+         0.0 MiB 
+         0.0 GiB 
+Elapsed time: 
+        27.0 milliseconds
+         0.0 seconds
+         0.0 minutes
+         0.0 hours
+         0.0 days
+--------------------------------------------------
+Fri 10.03.2017 11:36:05
+Hostname: Thinkpad-X1
+Processor: Selection, r = 2
+Sampling grid (1D), n = 3
+Sampling grid (2D), N = n^2 = 9
+# of combinations (reverse), Z = (N-1)*N/2 = 36 = 3.600E+01
+File Size:
+           0 bytes(B)
+         0.0 KiB 
+         0.0 MiB 
+         0.0 GiB 
+Elapsed time: 
+        28.0 milliseconds
+         0.0 seconds
+         0.0 minutes
+         0.0 hours
+         0.0 days
+--------------------------------------------------
+Fri 10.03.2017 11:36:05
+Hostname: Thinkpad-X1
+Processor: Selection, r = 2
+Sampling grid (1D), n = 9
+Sampling grid (2D), N = n^2 = 81
+# of combinations (reverse), Z = (N-1)*N/2 = 3240 = 3.240E+03
+File Size:
+           0 bytes(B)
+         0.0 KiB 
+         0.0 MiB 
+         0.0 GiB 
+Elapsed time: 
+        59.0 milliseconds
+         0.1 seconds
+         0.0 minutes
+         0.0 hours
+         0.0 days

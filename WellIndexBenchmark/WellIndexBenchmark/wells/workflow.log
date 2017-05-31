@@ -11,8 +11,8 @@ Job 2 - EXPORT_TRAJECTORY_DATA - for project realisation 1
 Job 3 - python3  /home/bellout/git/PCG/Fie. - for project realisation 1
 [3;J[H[2J
 
-Root: /home/bellout/git/PCG/FieldOptBenchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/
-Input file (file to be read): /home/bellout/git/PCG/FieldOptBenchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/TW01.txt
+Root: /home/bellout/git/PCG/FieldOpt-Benchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/
+Input file (file to be read): /home/bellout/git/PCG/FieldOpt-Benchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/TW01.txt
 name of well: TW01
 
 line1: [Decimal('36.000'), Decimal('12.000'), Decimal('1712.0000'), Decimal('1712.0000'), Decimal('90.00000000'), Decimal('0E-8')]
@@ -25,7 +25,7 @@ well md: %s [Decimal('1712.0000'), Decimal('1748.0000')]
 well incl: %s [Decimal('90.00000000'), Decimal('90.00000000')]
 well incl: %s [Decimal('0E-8'), Decimal('0E-8')]
 
-Output file (file to be writen): /home/bellout/git/PCG/FieldOptBenchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/events_TW01.rmscompletions
+Output file (file to be writen): /home/bellout/git/PCG/FieldOpt-Benchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/events_TW01.rmscompletions
 
 
 
@@ -37,7 +37,7 @@ Job 4, for Project realisation 1 - deactivated
 Job 5 - IMPORT_TW01COMPLETIONS - for project realisation 1
 Start importing completion events
 
-Importing file /home/bellout/git/PCG/FieldOptBenchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/events_TW01.rmscompletions ...
+Importing file /home/bellout/git/PCG/FieldOpt-Benchmarks/WellIndexBenchmark/WellIndexBenchmark/wells/workflow/events_TW01.rmscompletions ...
 Updating user interface ...
 <font color="green"><b>Completed job 5</b></font>
 <table border="1"><tr><td><b>Elapsed time</b></td><td>0:00:00.0</td></tr><tr><td><b>Total elapsed time</b></td><td>0:00:00.0</td></tr></table>
@@ -57,5 +57,5 @@ Saving data...
 <table border="1"><tr><td><b>Elapsed time</b></td><td>0:00:00.0</td></tr><tr><td><b>Total elapsed time</b></td><td>0:00:00.0</td></tr></table>
 
 <font color="green"><b>Completed workflow WI_CALC_BENCHMARK_PYCMD</b></font>
-<table border="1"><tr><td><b>Finish time</b></td><td>23:08:26</td></tr><tr><td><b>Elapsed time</b></td><td>0:00:00.1</td></tr></table>
+<table border="1"><tr><td><b>Finish time</b></td><td>13:27:53</td></tr><tr><td><b>Elapsed time</b></td><td>0:00:00.1</td></tr></table>
 <hr /><br />
