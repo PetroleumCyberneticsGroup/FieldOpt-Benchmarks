@@ -113,7 +113,7 @@ vector<int> sample_point_ranges::get_sample_point_ranges(){
     Matrix<int,Dynamic,1>::Map(&range_vec_std_[0], range_vec_.size()) = range_vec_;
 
     // std_v to eigen_v (keep for ref.)
-    // Array<int,Dynamic,1> eigen_v = Map<Array<int,Dynamic,1>>(v.data(), v.size();
+    // Array<int,Dynamic,1> eigen_v = Map<Array<int,Dynamic,1>>(v.data(), v.size());
 
     // debug
     if (debug){
